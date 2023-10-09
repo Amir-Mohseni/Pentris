@@ -3,7 +3,7 @@
  * @version 2022.0
  */
 
- import java.io.FileNotFoundException;
+import java.io.FileNotFoundException;
 //import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,13 +17,13 @@ public class PentominoBuilder {
     //All basic pentominoes that will be rotated and flipped
     private static int[][][] basicDatabase = {
             {
-            	// pentomino representation X
+                    // pentomino representation X
                     {0,1,0},
                     {1,1,1},
                     {0,1,0}
             },
             {
-            	// pentomino representation I
+                    // pentomino representation I
                     {1},
                     {1},
                     {1},
@@ -31,69 +31,67 @@ public class PentominoBuilder {
                     {1}
             },
             {
-            	// pentomino representation Z
+                    // pentomino representation Z
                     {0,1,1},
                     {0,1,0},
                     {1,1,0}
             },
             {
-            	// pentomino representation T
+                    // pentomino representation T
                     {1,1,1},
                     {0,1,0},
                     {0,1,0}
             },
             {
-            	// pentomino representation U
+                    // pentomino representation U
                     {1,1},
                     {1,0},
                     {1,1}
             },
             {
-            	// pentomino representation V
+                    // pentomino representation V
                     {1,1,1},
                     {1,0,0},
                     {1,0,0}
             },
             {
-            	// pentomino representation W
+                    // pentomino representation W
                     {0,0,1},
                     {0,1,1},
                     {1,1,0}
             },
             {
-            	// pentomino representation Y
+                    // pentomino representation Y
                     {1,0},
                     {1,1},
                     {1,0},
                     {1,0}
             },
             {
-            	// pentomino representation L
+                    // pentomino representation L
                     {1,0},
                     {1,0},
                     {1,0},
                     {1,1}
             },
             {
-            	//
-        		//
-        		// TODO: Implement pentomino representation P
-        		//
-        		//
+                    // pentomino representation P
+                    {1, 1},
+                    {1, 1},
+                    {1, 0},
             },
             {
-            	//
-        		//
-        		// TODO: Implement pentomino representation N
-        		//
-        		//
+                    // pentomino representation N
+                    {0, 1},
+                    {1, 1},
+                    {1, 0},
+                    {1, 0},
             },
             {
-            	//
-        		//
-        		// TODO: Implement pentomino representation F
-        		//
-        		//
+                    // pentomino representation F
+                    {0, 1, 1},
+                    {1, 1, 0},
+                    {0, 1, 0},
             }
     };
 
@@ -136,7 +134,7 @@ public class PentominoBuilder {
     }
 
     /**
-     * Rotate the matrix x times over 90 degrees 
+     * Rotate the matrix x times over 90 degrees
      * Assume that the matrix is a square!
      * It does not make a copy, so the return matrix does not have to be used
      * @param data: a matrix
@@ -374,16 +372,15 @@ public class PentominoBuilder {
      * @param data2: the second matrix
      * @return true if equal, false otherwise
      */
-    public static boolean isEqual(int[][] data1, int[][] data2)
-    {
-    	
-    	//
-    	//
-    	// TODO: To be implemented
-    	//
-    	//
+    public static boolean isEqual(int[][] data1, int[][] data2) {
+        //
+        //
+        // TODO: To be implemented
+        //
+        //
 
         return false;
+
     }
 
 
@@ -446,8 +443,8 @@ public class PentominoBuilder {
         return returnData;
     }
 
-    
-    /** 
+
+    /**
      * @param args
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
