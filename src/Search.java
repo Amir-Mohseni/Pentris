@@ -3,6 +3,7 @@
  * @version 2022.0
  */
 
+ import java.util.Arrays;
  import java.util.Random;
 
 /**
@@ -26,14 +27,10 @@ public class Search
         // Initialize an empty board
         int[][] field = new int[horizontalGridSize][verticalGridSize];
 
-        for(int i = 0; i < field.length; i++)
-        {
-            for(int j = 0; j < field[i].length; j++)
-            {
-                // -1 in the state matrix corresponds to empty square
-                // Any positive number identifies the ID of the pentomino
-            	field[i][j] = -1;
-            }
+        for (int[] ints : field) {
+            // -1 in the state matrix corresponds to empty square
+            // Any positive number identifies the ID of the pentomino
+            Arrays.fill(ints, -1);
         }
         //Start the basic search
         basicSearch(field);
@@ -41,7 +38,7 @@ public class Search
 	
 	/**
 	 * Get as input the character representation of a pentomino and translate it into its corresponding numerical value (ID)
-	 * @param character a character representating a pentomino
+	 * @param character a character representing a pentomino
 	 * @return	the corresponding ID (numerical value)
 	 */
     private static int characterToID(char character) {
@@ -75,7 +72,7 @@ public class Search
     }
 	
 	/**
-	 * Basic implementation of a search algorithm. It is not a bruto force algorithms (it does not check all the posssible combinations)
+	 * Basic implementation of a search algorithm. It is not a brute force algorithms (it does not check all the possible combinations)
 	 * but randomly takes possible combinations and positions to find a possible solution.
 	 * The solution is not necessarily the most efficient one
 	 * This algorithm can be very time-consuming
@@ -89,50 +86,48 @@ public class Search
     		solutionFound = true;
     		
     		//Empty board again to find a solution
-			for (int i = 0; i < field.length; i++) {
-				for (int j = 0; j < field[i].length; j++) {
-					field[i][j] = -1;
-				}
-			}
+            for (int[] ints : field) {
+                Arrays.fill(ints, -1);
+            }
     		
     		//Put all pentominoes with random rotation/flipping on a random position on the board
-    		for (int i = 0; i < input.length; i++) {
-    			
-    			//Choose a pentomino and randomly rotate/flip it
-    			int pentID = characterToID(input[i]);
-    			int mutation = random.nextInt(PentominoDatabase.data[pentID].length);
-    			int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
-    		
-    			//Randomly generate a position to put the pentomino on the board
-    			int x;
-    			int y;
-    			if (horizontalGridSize < pieceToPlace.length) {
-    				//this particular rotation of the piece is too long for the field
-    				x=-1;
-    			} else if (horizontalGridSize == pieceToPlace.length) {
-    				//this particular rotation of the piece fits perfectly into the width of the field
-    				x = 0;
-    			} else {
-    				//there are multiple possibilities where to place the piece without leaving the field
-    				x = random.nextInt(horizontalGridSize-pieceToPlace.length+1);
-    			}
+            for (char c : input) {
 
-    			if (verticalGridSize < pieceToPlace[0].length) {
-    				//this particular rotation of the piece is too high for the field
-    				y=-1;
-    			} else if (verticalGridSize == pieceToPlace[0].length) {
-    				//this particular rotation of the piece fits perfectly into the height of the field
-    				y = 0;
-    			} else {
-    				//there are multiple possibilities where to place the piece without leaving the field
-    				y = random.nextInt(verticalGridSize-pieceToPlace[0].length+1);
-    			}
-    		
-    			//If there is a possibility to place the piece on the field, do it
-    			if (x >= 0 && y >= 0) {
-	    			addPiece(field, pieceToPlace, pentID, x, y);
-	    		} 
-    		}
+                //Choose a pentomino and randomly rotate/flip it
+                int pentID = characterToID(c);
+                int mutation = random.nextInt(PentominoDatabase.data[pentID].length);
+                int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
+
+                //Randomly generate a position to put the pentomino on the board
+                int x;
+                int y;
+                if (horizontalGridSize < pieceToPlace.length) {
+                    //this particular rotation of the piece is too long for the field
+                    x = -1;
+                } else if (horizontalGridSize == pieceToPlace.length) {
+                    //this particular rotation of the piece fits perfectly into the width of the field
+                    x = 0;
+                } else {
+                    //there are multiple possibilities where to place the piece without leaving the field
+                    x = random.nextInt(horizontalGridSize - pieceToPlace.length + 1);
+                }
+
+                if (verticalGridSize < pieceToPlace[0].length) {
+                    //this particular rotation of the piece is too high for the field
+                    y = -1;
+                } else if (verticalGridSize == pieceToPlace[0].length) {
+                    //this particular rotation of the piece fits perfectly into the height of the field
+                    y = 0;
+                } else {
+                    //there are multiple possibilities where to place the piece without leaving the field
+                    y = random.nextInt(verticalGridSize - pieceToPlace[0].length + 1);
+                }
+
+                //If there is a possibility to place the piece on the field, do it
+                if (x >= 0 && y >= 0) {
+                    addPiece(field, pieceToPlace, pentID, x, y);
+                }
+            }
     		//Check whether complete field is filled
     		//
     		//
@@ -169,6 +164,7 @@ public class Search
                 if (piece[i][j] == 1)
                 {
                     // Add the ID of the pentomino to the board if the pentomino occupies this square
+					// i and j are offsets
                     field[x + i][y + j] = pieceID;
                 }
             }
