@@ -105,28 +105,26 @@ public class PentominoBuilder {
     public static void makeDatabase()
     {
         //do it for every piece of the basic database
-        for(int i=0;i<basicDatabase.length;i++)
-        {
+        for (int[][] ints : basicDatabase) {
             //make a piece with maximal number of mutations an space
             int[][][] tempDatabase = new int[8][5][5];
 
             //take a piece of basic database, make it bigger so it fits in the 5*5, rotate it j times, move it to the left upper corner so duplicates will be the same
             for (int j = 0; j < 4; j++) {
-                tempDatabase[j] = moveToAbove(rotate(makeBigger(basicDatabase[i], 5), j));
+                tempDatabase[j] = moveToAbove(rotate(makeBigger(ints, 5), j));
             }
 
             //same as above, but flipping it
             for (int j = 0; j < 4; j++) {
-                tempDatabase[4 + j] = moveToAbove(rotate(verticalFlip(makeBigger(basicDatabase[i], 5)), j));
+                tempDatabase[4 + j] = moveToAbove(rotate(verticalFlip(makeBigger(ints, 5)), j));
             }
 
             //erase duplicates
-            tempDatabase=eraseDuplicates(tempDatabase);
+            tempDatabase = eraseDuplicates(tempDatabase);
 
             //erase empty spaces in every piece
-            for(int j=0;j<tempDatabase.length;j++)
-            {
-                tempDatabase[j]=eraseEmptySpace(tempDatabase[j]);
+            for (int j = 0; j < tempDatabase.length; j++) {
+                tempDatabase[j] = eraseEmptySpace(tempDatabase[j]);
             }
 
             //add the found pieces of just one basic piece to the database
@@ -146,9 +144,7 @@ public class PentominoBuilder {
     {
         int [][] tempData1 = new int[data.length][data[0].length];
         for (int i = 0; i < data.length; i++) {
-            for (int j = 0; j < data[i].length; j++) {
-                tempData1[i][j]=data[i][j];
-            }
+            System.arraycopy(data[i], 0, tempData1[i], 0, data[i].length);
         }
 
         //do it for the amount of times it needs to be rotated
@@ -163,9 +159,7 @@ public class PentominoBuilder {
             }
             //put it back in the starting matrix so you can do it again
             for (int i = 0; i < tempData1.length; i++) {
-                for (int j = 0; j < tempData1[i].length; j++) {
-                    tempData1[i][j] = tempData2[i][j];
-                }
+                System.arraycopy(tempData2[i], 0, tempData1[i], 0, tempData1[i].length);
             }
         }
         return tempData1;
@@ -205,10 +199,7 @@ public class PentominoBuilder {
         //flip the matrix to the return matrix
         for(int i=0;i<data.length;i++)
         {
-            for(int j=0;j<data[i].length;j++)
-            {
-                returnData[i][j]=data[data.length-i-1][j];
-            }
+            System.arraycopy(data[data.length - i - 1], 0, returnData[i], 0, data[i].length);
         }
         return returnData;
     }
@@ -228,10 +219,7 @@ public class PentominoBuilder {
         //copies the matrix in the new matrix
         for(int i=0;i<data.length;i++)
         {
-            for (int j = 0; j < data[i].length; j++)
-            {
-                returnData[i][j]=data[i][j];
-            }
+            System.arraycopy(data[i], 0, returnData[i], 0, data[i].length);
         }
         return returnData;
     }
@@ -246,16 +234,15 @@ public class PentominoBuilder {
     {
         //the amount of rows it needs to make empty after moving up
         int amountToCut=0;
-        //do it for the the amount of rows there are to be sure
+        //do it for the amount of rows there are to be sure
         for(int i=0;i<data[0].length;i++)
         {
             //check if the first row is empty
             int empty=0;
-            for(int j=0;j<data.length;j++)
-            {
-                if(data[j][0]==1)
-                {
-                    empty=1;
+            for (int[] datum : data) {
+                if (datum[0] == 1) {
+                    empty = 1;
+                    break;
                 }
             }
             //if empty move everything one up
@@ -287,9 +274,9 @@ public class PentominoBuilder {
             int empty=0;
             for(int j=0;j<data[0].length;j++)
             {
-                if(data[0][j]==1)
-                {
-                    empty=1;
+                if (data[0][j] == 1) {
+                    empty = 1;
+                    break;
                 }
             }
             //if empty move everything one to the left
@@ -307,9 +294,7 @@ public class PentominoBuilder {
         }
         //make the last amountToCut columns empty, because these are copies
         for(int j=data.length - amountToCut;j<data.length;j++) {
-            for (int k = 0; k < data[j].length; k++) {
-                data[j][k] = 0;
-            }
+            Arrays.fill(data[j], 0);
         }
         return data;
     }
@@ -391,7 +376,7 @@ public class PentominoBuilder {
     /**
      * Erase rows and columns that contain only zeros
      * @param data a matrix
-     * @return the shrinken matrix
+     * @return the shrunken matrix
      */
     public static int[][]eraseEmptySpace(int[][] data)
     {
@@ -403,11 +388,10 @@ public class PentominoBuilder {
         {
             //check if row i is empty
             int columnIsEmpty=0;
-            for(int j=0;j<data.length;j++)
-            {
-                if(data[j][i]==1)
-                {
-                    columnIsEmpty=1;
+            for (int[] datum : data) {
+                if (datum[i] == 1) {
+                    columnIsEmpty = 1;
+                    break;
                 }
             }
             //if empty, store that row number
@@ -423,9 +407,9 @@ public class PentominoBuilder {
             int rowIsEmpty=0;
             for(int j=0;j<data[i].length;j++)
             {
-                if(data[i][j]==1)
-                {
-                    rowIsEmpty=1;
+                if (data[i][j] == 1) {
+                    rowIsEmpty = 1;
+                    break;
                 }
             }
             //if empty, store that column number
@@ -439,10 +423,7 @@ public class PentominoBuilder {
         //copy the input matrix to the new matrix
         for(int i=0;i<amountOfColumns;i++)
         {
-            for(int j=0;j<amountOfRows;j++)
-            {
-                returnData[i][j]=data[i][j];
-            }
+            System.arraycopy(data[i], 0, returnData[i], 0, amountOfRows);
         }
         return returnData;
     }
