@@ -16,6 +16,9 @@ public class Search
     public static final int horizontalGridSize = 5;
     public static final int verticalGridSize = 6;
 
+    //Test
+    public static int counter = 0;
+
     public static final int NumberOfPieces = horizontalGridSize * verticalGridSize / 5;
     
     public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L'};
@@ -175,10 +178,15 @@ public class Search
         }
 
         //Start the branch search
-        recursiveSearch(field, 0);
+        boolean result = recursiveSearch(field, 0);
+        if(!result)
+            System.out.println("No solution Found");
     }
 
     private static boolean recursiveSearch(int[][] field, int index) {
+        counter++;
+        System.out.println(counter);
+
         if(index == NumberOfPieces) {
             ui.setState(field);
             System.out.println("Solution found");
@@ -187,17 +195,21 @@ public class Search
         int pentID = characterToID(input[index]);
         for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
             int[][] piece = PentominoDatabase.data[pentID][mutation];
-            for (int i = 0; i + piece.length < field.length; i++) {
-                for (int j = 0; j + piece[0].length < field[i].length; j++) {
+            for (int i = 0; i + piece.length <= field.length; i++) {
+                for (int j = 0; j + piece[0].length <= field[0].length; j++) {
+                    //Checks if we can place the pentamino
                     boolean validPlacement = true;
-                    for (int x = 0; validPlacement && x < piece.length; x++)
-                        for (int y = 0; y < piece[x].length; y++)
-                            if (!(i + x < field.length) || !(j + y < field[i].length) || (piece[x][y] == 1 && field[i + x][j + y] != -1)) {
+                    for (int x = 0; validPlacement && x < piece.length; x++) {
+                        for (int y = 0; y < piece[0].length; y++) {
+                            if (piece[x][y] == 1 && field[i + x][j + y] != -1) {
                                 validPlacement = false;
                                 break;
                             }
+                        }
+                    }
                     if (!validPlacement)
                         continue;
+                    //Adds piece and creates a branch
                     addPiece(field, piece, pentID, i, j);
                     if (recursiveSearch(field, index + 1))
                         return true;
