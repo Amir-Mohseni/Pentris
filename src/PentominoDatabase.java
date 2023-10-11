@@ -6,7 +6,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -37,8 +36,7 @@ import java.util.Scanner;
 public class PentominoDatabase
 {
     //Stores and loads the data on program initialization
-    private static final String pentominosFilePath = PentominoDatabase.class.getResource("pentominos.csv").getPath();
-    public static int[][][][] data = loadData(pentominosFilePath);
+    public static int[][][][] data = loadData("pentominos.csv");
 
     
     /** 
