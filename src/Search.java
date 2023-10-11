@@ -4,6 +4,8 @@
  */
 
  import java.util.Arrays;
+ import java.util.Collections;
+ import java.util.List;
  import java.util.Random;
 
  import java.util.concurrent.TimeUnit;
@@ -14,14 +16,17 @@
 public class Search
 {
     public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 6;
+    public static final int verticalGridSize = 12;
 
     //Test
     public static int counter = 0;
 
+    public static int[] dx = {1, 0, 0, -1};
+    public static int[] dy = {0, 1, -1, 0};
+
     public static final int NumberOfPieces = horizontalGridSize * verticalGridSize / 5;
     
-    public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L'};
+    public static char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'P', 'F', 'V', 'X', 'U'};
     
     //Static UI class to display the board
     public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
@@ -183,6 +188,18 @@ public class Search
             System.out.println("No solution Found");
     }
 
+    private static int dfs(boolean[][] seen, int[][] field, int x, int y) {
+        seen[x][y] = true;
+        int countNewNodes = 1;
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i], ny = y + dy[i];
+            if(nx < 0 || ny < 0 || nx >= seen.length || ny >= seen[0].length || seen[nx][ny] || field[nx][ny] != -1)
+                continue;
+            countNewNodes += dfs(seen, field, nx, ny);
+        }
+        return countNewNodes;
+    }
+
     private static boolean recursiveSearch(int[][] field, int index) {
         counter++;
         System.out.println(counter);
@@ -192,7 +209,23 @@ public class Search
             System.out.println("Solution found");
             return true;
         }
-        int pentID = characterToID(input[index]);
+
+        //Optimization
+        boolean seen[][] = new boolean[field.length][field[0].length];
+        for (boolean[] bools: seen)
+            Arrays.fill(bools, false);
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[0].length; j++) {
+                if (!seen[i][j] && field[i][j] == -1) {
+                    int x = dfs(seen, field, i, j);
+                    if (x % 5 != 0)
+                        return false;
+                }
+            }
+        }
+
+//        int pentID = characterToID(input[index]);
+        int pentID = index;
         for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
             int[][] piece = PentominoDatabase.data[pentID][mutation];
             for (int i = 0; i + piece.length <= field.length; i++) {
@@ -267,6 +300,7 @@ public class Search
     public static void main(String[] args)
     {
         //search();
+
         branchSearch();
     }
 }
