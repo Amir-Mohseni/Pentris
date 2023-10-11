@@ -6,6 +6,8 @@
  import java.util.Arrays;
  import java.util.Random;
 
+ import java.util.concurrent.TimeUnit;
+
 /**
  * This class includes the methods to support the search of a solution.
  */
@@ -81,8 +83,13 @@ public class Search
     private static void basicSearch(int[][] field){
     	Random random = new Random();
     	boolean solutionFound = false;
+
+        int runLoops = 0;
     	
     	while (!solutionFound) {
+            runLoops++;
+            System.out.println("runLoops = " + runLoops);
+
     		solutionFound = true;
     		
     		//Empty board again to find a solution
@@ -132,8 +139,28 @@ public class Search
     		//
     		//
     		// TODO: To be implemented
-    		//
-    		//
+
+//            ui.setState(field);
+//            try{
+//                TimeUnit.MILLISECONDS.sleep(50);
+//            } catch (InterruptedException e){}
+//            if (runLoops==200){
+//                for (int[] rows : field){
+//                    Arrays.fill(rows, 1);
+//                }
+//            }
+
+            for (int[] row : field){
+                for (int col : row){
+                    if (col == -1){
+                        solutionFound = false;
+                        break;
+                    }
+                }
+                if (solutionFound == false){
+                    break;
+                }
+            }
     		
 
     		
