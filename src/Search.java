@@ -201,7 +201,7 @@ public class Search
                     addPiece(field, piece, pentID, i, j);
                     if (recursiveSearch(field, index + 1))
                         return true;
-                    removePiece(field, piece, index, i, j);
+                    removePiece(field, piece, pentID, i, j);
                 }
             }
         }
