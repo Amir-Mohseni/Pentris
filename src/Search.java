@@ -3,12 +3,11 @@
  * @version 2022.0
  */
 
- import java.util.Arrays;
- import java.util.Collections;
- import java.util.List;
- import java.util.Random;
+ import java.util.*;
 
  import java.util.concurrent.TimeUnit;
+
+ import static java.util.Collections.swap;
 
 /**
  * This class includes the methods to support the search of a solution.
@@ -26,7 +25,7 @@ public class Search
 
     public static final int NumberOfPieces = horizontalGridSize * verticalGridSize / 5;
     
-    public static char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L', 'N', 'P', 'F', 'V', 'X', 'U'};
+    public static char[] input = { 'W', 'Y', 'I', 'L', 'N', 'P', 'F', 'V', 'X', 'U', 'T', 'Z'};
     
     //Static UI class to display the board
     public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
@@ -201,8 +200,8 @@ public class Search
     }
 
     private static boolean recursiveSearch(int[][] field, int index) {
-        counter++;
-        System.out.println(counter);
+//        counter++;
+//        System.out.println(counter);
 
         if(index == NumberOfPieces) {
             ui.setState(field);
@@ -224,8 +223,8 @@ public class Search
             }
         }
 
-//        int pentID = characterToID(input[index]);
-        int pentID = index;
+        int pentID = characterToID(input[index]);
+//        int pentID = index;
         for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
             int[][] piece = PentominoDatabase.data[pentID][mutation];
             for (int i = 0; i + piece.length <= field.length; i++) {
@@ -300,7 +299,6 @@ public class Search
     public static void main(String[] args)
     {
         //search();
-
         branchSearch();
     }
 }
