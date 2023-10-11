@@ -15,6 +15,8 @@ public class Search
 {
     public static final int horizontalGridSize = 5;
     public static final int verticalGridSize = 6;
+
+    public static final int NumberOfPieces = horizontalGridSize * verticalGridSize / 5;
     
     public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L'};
     
@@ -136,19 +138,6 @@ public class Search
                 }
             }
     		//Check whether complete field is filled
-    		//
-    		//
-    		// TODO: To be implemented
-
-//            ui.setState(field);
-//            try{
-//                TimeUnit.MILLISECONDS.sleep(50);
-//            } catch (InterruptedException e){}
-//            if (runLoops==200){
-//                for (int[] rows : field){
-//                    Arrays.fill(rows, 1);
-//                }
-//            }
 
             for (int[] row : field){
                 for (int col : row){
@@ -171,6 +160,58 @@ public class Search
     			break;
     		}
     	}
+    }
+
+
+
+    private static void branchSearch() {
+        // Initialize an empty board
+        int[][] field = new int[horizontalGridSize][verticalGridSize];
+
+        for (int[] ints : field) {
+            // -1 in the state matrix corresponds to empty square
+            // Any positive number identifies the ID of the pentomino
+            Arrays.fill(ints, -1);
+        }
+
+        //Empty the array
+        for (int[] ints : field) {
+            Arrays.fill(ints, -1);
+        }
+
+        //Start the branch search
+        recursiveSearch(field, 0);
+    }
+
+    private static boolean recursiveSearch(int[][] field, int pentID) {
+        if(pentID == NumberOfPieces) {
+            ui.setState(field);
+            System.out.println("Solution found");
+            return true;
+        }
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if(field[i][j] == -1) {
+                    for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
+                        boolean validPlacement = true;
+                        int[][] piece = PentominoDatabase.data[pentID][mutation];
+                        for (int x = 0; validPlacement && x < piece.length; x++)
+                            for (int y = 0; y < piece[x].length; y++)
+                                if (!(i + x < field.length) || !(j + y < field[i].length) || (piece[x][y] == 1 && field[i + x][j + y] != -1)) {
+                                    validPlacement = false;
+                                    break;
+                                }
+                        if(!validPlacement)
+                            continue;
+                        addPiece(field, piece, pentID, i, j);
+                        if (recursiveSearch(field, pentID + 1))
+                            return true;
+                        removePiece(field, piece, pentID, i, j);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     
@@ -198,11 +239,28 @@ public class Search
         }
     }
 
+    public static void removePiece(int[][] field, int[][] piece, int pieceID, int x, int y)
+    {
+        for(int i = 0; i < piece.length; i++) // loop over x position of pentomino
+        {
+            for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
+            {
+                if (piece[i][j] == 1)
+                {
+                    // Add the ID of the pentomino to the board if the pentomino occupies this square
+                    // i and j are offsets
+                    field[x + i][y + j] = -1;
+                }
+            }
+        }
+    }
+
 	/**
 	 * Main function. Needs to be executed to start the basic search algorithm
 	 */
     public static void main(String[] args)
     {
-        search();
+        //search();
+        branchSearch();
     }
 }
