@@ -299,6 +299,21 @@ public class Search
     public static void main(String[] args)
     {
         //search();
+        input = randomShuffle(input);
         branchSearch();
+    }
+
+    public static char[] randomShuffle(char[] startArr) {
+        Random random = new Random();
+        int len = startArr.length;
+        char[] resultArr = new char[len];
+        for (int i = 0; i < len; i++) {
+            resultArr[i] = startArr[i];
+            int index = random.nextInt(i + 1);
+            char temp = resultArr[index];
+            resultArr[index] = resultArr[i];
+            resultArr[i] = temp;
+        }
+        return resultArr;
     }
 }
