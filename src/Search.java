@@ -3,10 +3,11 @@
  * @version 2022.0
  */
 
- import java.util.Arrays;
- import java.util.Random;
+ import java.util.*;
 
  import java.util.concurrent.TimeUnit;
+
+ import static java.util.Collections.swap;
 
 /**
  * This class includes the methods to support the search of a solution.
@@ -14,14 +15,17 @@
 public class Search
 {
     public static final int horizontalGridSize = 5;
-    public static final int verticalGridSize = 6;
+    public static final int verticalGridSize = 12;
 
     //Test
     public static int counter = 0;
 
+    public static int[] dx = {1, 0, 0, -1};
+    public static int[] dy = {0, 1, -1, 0};
+
     public static final int NumberOfPieces = horizontalGridSize * verticalGridSize / 5;
     
-    public static final char[] input = { 'W', 'Y', 'I', 'T', 'Z', 'L'};
+    public static char[] input = { 'W', 'Y', 'I', 'L', 'N', 'P', 'F', 'V', 'X', 'U', 'T', 'Z'};
     
     //Static UI class to display the board
     public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
@@ -85,7 +89,7 @@ public class Search
 	 * This algorithm can be very time-consuming
 	 * @param field a matrix representing the board to be fulfilled with pentominoes
 	 */
-    private static void basicSearch(int[][] field){
+    private static void basicSearch(int[][] field) {
     	Random random = new Random();
     	boolean solutionFound = false;
 
@@ -183,16 +187,44 @@ public class Search
             System.out.println("No solution Found");
     }
 
+    private static int dfs(boolean[][] seen, int[][] field, int x, int y) {
+        seen[x][y] = true;
+        int countNewNodes = 1;
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i], ny = y + dy[i];
+            if(nx < 0 || ny < 0 || nx >= seen.length || ny >= seen[0].length || seen[nx][ny] || field[nx][ny] != -1)
+                continue;
+            countNewNodes += dfs(seen, field, nx, ny);
+        }
+        return countNewNodes;
+    }
+
     private static boolean recursiveSearch(int[][] field, int index) {
-        counter++;
-        System.out.println(counter);
+//        counter++;
+//        System.out.println(counter);
 
         if(index == NumberOfPieces) {
             ui.setState(field);
             System.out.println("Solution found");
             return true;
         }
+
+        //Optimization
+        boolean seen[][] = new boolean[field.length][field[0].length];
+        for (boolean[] bools: seen)
+            Arrays.fill(bools, false);
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[0].length; j++) {
+                if (!seen[i][j] && field[i][j] == -1) {
+                    int x = dfs(seen, field, i, j);
+                    if (x % 5 != 0)
+                        return false;
+                }
+            }
+        }
+
         int pentID = characterToID(input[index]);
+//        int pentID = index;
         for (int mutation = 0; mutation < PentominoDatabase.data[pentID].length; mutation++) {
             int[][] piece = PentominoDatabase.data[pentID][mutation];
             for (int i = 0; i + piece.length <= field.length; i++) {
@@ -266,7 +298,23 @@ public class Search
 	 */
     public static void main(String[] args)
     {
-        //search();
+        input = randomShuffle(input);
+//        search();
         branchSearch();
     }
+
+    public static char[] randomShuffle(char[] startArr) {
+        Random random = new Random();
+        int len = startArr.length;
+        char[] resultArr = new char[len];
+        for (int i = 0; i < len; i++) {
+            resultArr[i] = startArr[i];
+            int index = random.nextInt(i + 1);
+            char temp = resultArr[index];
+            resultArr[index] = resultArr[i];
+            resultArr[i] = temp;
+        }
+        return resultArr;
+    }
+
 }
