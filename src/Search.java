@@ -89,7 +89,7 @@ public class Search
 	 * This algorithm can be very time-consuming
 	 * @param field a matrix representing the board to be fulfilled with pentominoes
 	 */
-    private static void basicSearch(int[][] field){
+    private static void basicSearch(int[][] field) {
     	Random random = new Random();
     	boolean solutionFound = false;
 
@@ -298,8 +298,8 @@ public class Search
 	 */
     public static void main(String[] args)
     {
-        //search();
         input = randomShuffle(input);
+//        search();
         branchSearch();
     }
 
