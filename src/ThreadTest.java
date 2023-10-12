@@ -23,7 +23,7 @@ public class ThreadTest extends Thread {
          */
         long total = 0;
         int iterNum = 100;
-        int minTime = 100000, maxTime = 0;
+        int minTime = Integer.MAX_VALUE, maxTime = Integer.MIN_VALUE;
         for (int i = 0; i < iterNum; i++) {
             long startTime = System.currentTimeMillis();
             Search.main(null);
