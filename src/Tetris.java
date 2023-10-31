@@ -58,9 +58,20 @@ public class Tetris {
         //Randomly shuffle the permutation
     }
 
-    public static void addPiece() {
+    public static void addPiece(int x,  int y, int index) {
         //TODO
         //Add the piece to board
+        int mutation = rotation[index];
+        int pentID = permutation[index];
+        int[][] piece = PentominoDatabase.data[pentID][mutation];
+        for (int i = 0; i < piece.length; i++) {
+            for (int j = 0; j < piece[i].length; j++) {
+                int nx = x + i, ny = y + j;
+                if(piece[i][j] == 1) {
+                    board[nx][ny] = pentID;
+                }
+            }
+        }
     }
 
     public static void movePiece() {
@@ -98,9 +109,7 @@ public class Tetris {
 
     public static void printBoard() {
         for (int i = HEIGHT - 1; i >= 0; i--) {
-            for (int j = 0; j < WIDTH; j++) {
-                System.out.println(Arrays.toString(board[i]));
-            }
+            System.out.println(Arrays.toString(board[i]));
         }
     }
 
@@ -108,6 +117,7 @@ public class Tetris {
 
     public static void main(String[] args) {
         Tetris game = new Tetris();
+//        addPiece(5, 2, 2);
         game.printBoard();
     }
 }
