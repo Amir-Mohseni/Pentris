@@ -79,8 +79,9 @@ public class Tetris {
     }
 
     //Before adding/Moving a block we need to check if that move is valid
-    public static boolean checkValidity(int x, int y, int pentID) {
-        int mutation = rotation[pentID];
+    public static boolean checkValidity(int x, int y, int index) {
+        int mutation = rotation[index];
+        int pentID = permutation[index];
         int[][] piece = PentominoDatabase.data[pentID][mutation];
 
         for (int i = 0; i < piece.length; i++)
