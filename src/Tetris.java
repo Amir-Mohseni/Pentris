@@ -12,21 +12,29 @@ public class Tetris {
     public static void main(String[] args) throws InterruptedException {
         Tetris tetris = new Tetris();
         Board gameBoard = tetris.gameBoard;
-        int MOVE_TIMER = 2;
+        long MOVE_TIMER = 1000;
         boolean gameEnded = false;
         int currentPiece = 0;
 
         while(!gameEnded) {
             int id = gameBoard.permutation[currentPiece];
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
-            ui.setState(transpose(gameBoard.grid));
+            updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
-                TimeUnit.SECONDS.sleep(MOVE_TIMER);
-                ui.setState(transpose(gameBoard.grid));
+                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
+                MOVE_TIMER *= 0.99;
+                System.out.println(MOVE_TIMER);
+                updateDisplay(gameBoard);
             }
-            gameEnded = true;
-            ui.setState(transpose(gameBoard.grid));
+            updateDisplay(gameBoard);
+            currentPiece++;
+            if(currentPiece == 12)
+                gameEnded = true;
         }
+    }
+
+    public static void updateDisplay(Board gameBoard) {
+        ui.setState(transpose(gameBoard.grid));
     }
 
     public static int[][] transpose(int[][] curGrid) {

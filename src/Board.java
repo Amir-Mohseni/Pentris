@@ -68,6 +68,8 @@ public class Board {
             return false;
     }
 
+    //TODO: Add rotate pieces
+
     boolean validMove(Cords cord, Piece piece) {
         for (Cords item : piece.occupiedSpaces) {
             Cords newCord = item.add(cord.x, cord.y);
