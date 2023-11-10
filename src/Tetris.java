@@ -1,4 +1,8 @@
+import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +14,9 @@ public class Tetris {
         ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 50);
     }
     public static void main(String[] args) throws InterruptedException {
+
         Tetris tetris = new Tetris();
+        Scanner scanner = new Scanner(System.in);
         Board gameBoard = tetris.gameBoard;
         long MOVE_TIMER = 1000;
         boolean gameEnded = false;
@@ -21,6 +27,30 @@ public class Tetris {
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
+                JFrame tempFrame = new JFrame();
+                    tempFrame.addKeyListener(new KeyAdapter() {
+                        public void keyPressed(KeyEvent e) {
+                            int keyCode = e.getKeyCode();
+                            switch (keyCode){
+                                case KeyEvent.VK_A:
+                                case KeyEvent.VK_LEFT:
+                                    if (gameBoard.validMove(new Cords(0, -1), gameBoard.pieces.get(id)))
+                                        gameBoard.movePiece(new Cords(0, -1), gameBoard.pieces.get(id));
+                                    break;
+                                case KeyEvent.VK_D:
+                                case KeyEvent.VK_RIGHT:
+                                    if (gameBoard.validMove(new Cords(0, 1), gameBoard.pieces.get(id)))
+                                        gameBoard.movePiece(new Cords(0, 1), gameBoard.pieces.get(id));
+                                    break;
+                                case KeyEvent.VK_R:
+                                    //Rotate
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+                tempFrame.setVisible(true);
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
                 System.out.println(MOVE_TIMER);
