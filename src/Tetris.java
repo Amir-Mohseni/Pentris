@@ -20,9 +20,10 @@ public class Tetris {
             int id = gameBoard.permutation[currentPiece];
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
             ui.setState(transpose(gameBoard.grid));
-            TimeUnit.SECONDS.sleep(2);
-            gameBoard.applyGravity(gameBoard.pieces.get(id));
-
+            while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
+                TimeUnit.SECONDS.sleep(MOVE_TIMER);
+                ui.setState(transpose(gameBoard.grid));
+            }
             gameEnded = true;
             ui.setState(transpose(gameBoard.grid));
         }
