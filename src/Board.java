@@ -12,14 +12,14 @@ public class Board {
     ArrayList <Piece> pieces = new ArrayList<>();
 
     Board(int width, int height) {
+        Random rand = new Random();
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
             permutation[i] = i;
         randomShuffle(permutation);
 
-        for (int i = 0; i < NUMBER_OF_PIECES; i++) {
-            //TODO: add random rotation instead of 0
+        for (int i = 0; i < NUMBER_OF_PIECES; i++)
             pieces.add(new Piece(permutation[i], 0));
-        }
+            //pieces.add(new Piece(permutation[i], rand.nextInt(PentominoDatabase.data[permutation[i]].length)));
 
         this.HEIGHT = height;
         this.WIDTH = width;

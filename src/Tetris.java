@@ -18,26 +18,38 @@ public class Tetris {
         Tetris tetris = new Tetris();
         Scanner scanner = new Scanner(System.in);
         Board gameBoard = tetris.gameBoard;
-        long MOVE_TIMER = 1500;
+        long MOVE_TIMER = 2000;
         boolean gameEnded = false;
         int currentPiece = 0;
 
         while(!gameEnded) {
             int id = gameBoard.permutation[currentPiece];
+            if(!gameBoard.validPlacement(new Cords(1, 2), gameBoard.pieces.get(id))) {
+                System.out.println("Game Over");
+                gameEnded = true;
+                break;
+            }
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
+                //Read inputs from keyboard
                 JFrame tempFrame = getjFrame(gameBoard, id);
                 tempFrame.setVisible(true);
+                updateDisplay(gameBoard);
+                tempFrame.setVisible(true);
+
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
-//                System.out.println(MOVE_TIMER);
+
                 updateDisplay(gameBoard);
             }
             updateDisplay(gameBoard);
             currentPiece++;
-            if(currentPiece == 12)
+            if(currentPiece == 12) {
                 gameEnded = true;
+                System.out.println("You Won!");
+                break;
+            }
         }
     }
 
@@ -59,6 +71,10 @@ public class Tetris {
                         break;
                     case KeyEvent.VK_R:
                         //Rotate
+                        break;
+                    case KeyEvent.VK_SPACE:
+                        while (gameBoard.applyGravity(gameBoard.pieces.get(id)))
+                            continue;
                         break;
                     default:
                         break;
