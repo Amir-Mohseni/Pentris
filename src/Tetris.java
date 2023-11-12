@@ -18,7 +18,7 @@ public class Tetris {
         Tetris tetris = new Tetris();
         Scanner scanner = new Scanner(System.in);
         Board gameBoard = tetris.gameBoard;
-        long MOVE_TIMER = 1000;
+        long MOVE_TIMER = 1500;
         boolean gameEnded = false;
         int currentPiece = 0;
 
@@ -27,33 +27,11 @@ public class Tetris {
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
-                JFrame tempFrame = new JFrame();
-                    tempFrame.addKeyListener(new KeyAdapter() {
-                        public void keyPressed(KeyEvent e) {
-                            int keyCode = e.getKeyCode();
-                            switch (keyCode){
-                                case KeyEvent.VK_A:
-                                case KeyEvent.VK_LEFT:
-                                    if (gameBoard.validMove(new Cords(0, -1), gameBoard.pieces.get(id)))
-                                        gameBoard.movePiece(new Cords(0, -1), gameBoard.pieces.get(id));
-                                    break;
-                                case KeyEvent.VK_D:
-                                case KeyEvent.VK_RIGHT:
-                                    if (gameBoard.validMove(new Cords(0, 1), gameBoard.pieces.get(id)))
-                                        gameBoard.movePiece(new Cords(0, 1), gameBoard.pieces.get(id));
-                                    break;
-                                case KeyEvent.VK_R:
-                                    //Rotate
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    });
+                JFrame tempFrame = getjFrame(gameBoard, id);
                 tempFrame.setVisible(true);
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
-                System.out.println(MOVE_TIMER);
+//                System.out.println(MOVE_TIMER);
                 updateDisplay(gameBoard);
             }
             updateDisplay(gameBoard);
@@ -61,6 +39,33 @@ public class Tetris {
             if(currentPiece == 12)
                 gameEnded = true;
         }
+    }
+
+    private static JFrame getjFrame(Board gameBoard, int id) {
+        JFrame tempFrame = new JFrame();
+        tempFrame.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+                switch (keyCode){
+                    case KeyEvent.VK_A:
+                    case KeyEvent.VK_LEFT:
+                        if (gameBoard.validMove(new Cords(0, -1), gameBoard.pieces.get(id)))
+                            gameBoard.movePiece(new Cords(0, -1), gameBoard.pieces.get(id));
+                        break;
+                    case KeyEvent.VK_D:
+                    case KeyEvent.VK_RIGHT:
+                        if (gameBoard.validMove(new Cords(0, 1), gameBoard.pieces.get(id)))
+                            gameBoard.movePiece(new Cords(0, 1), gameBoard.pieces.get(id));
+                        break;
+                    case KeyEvent.VK_R:
+                        //Rotate
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        return tempFrame;
     }
 
     public static void updateDisplay(Board gameBoard) {

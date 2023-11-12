@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.TreeSet;
 
 public class Board {
@@ -11,9 +12,9 @@ public class Board {
     ArrayList <Piece> pieces = new ArrayList<>();
 
     Board(int width, int height) {
-        //TODO: add random permutation
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
             permutation[i] = i;
+        randomShuffle(permutation);
 
         for (int i = 0; i < NUMBER_OF_PIECES; i++) {
             //TODO: add random rotation instead of 0
@@ -93,6 +94,16 @@ public class Board {
                     }
                 }
         return true;
+    }
+
+    public void randomShuffle(int[] arr) {
+        Random rand = new Random();
+        for (int i = 0; i < arr.length; i++) {
+            int temp = arr[i];
+            int swapIndex = rand.nextInt(i + 1);
+            arr[i] = arr[swapIndex];
+            arr[swapIndex] = temp;
+        }
     }
 
     public boolean outOfBounds(Cords cord) {
