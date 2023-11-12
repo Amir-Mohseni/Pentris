@@ -32,12 +32,19 @@ public class Board {
 
     public void addPiece(Cords cord, Piece piece) {
         int[][] mat = PentominoDatabase.data[piece.id][piece.rotation];
+        for (int[] row : mat) {
+            for (int item : row)
+                System.out.print(item + " ");
+            System.out.println();
+        }
         TreeSet <Cords> newCords = new TreeSet<>();
         for (int i = 0; i < mat.length; i++)
             for (int j = 0; j < mat[0].length; j++)
-                if(mat[i][j] == 1) {
+                if(mat[i][j] != 0) {
                     Cords newCord = cord.add(i, j);
                     newCords.add(newCord);
+                    if(mat[i][j] == 2)
+                        piece.center = newCord;
                 }
 
         piece.occupiedSpaces = newCords;
@@ -54,6 +61,7 @@ public class Board {
             Cords newCord = item.add(cord.x, cord.y);
             newCords.add(newCord);
         }
+        piece.center.add(cord.x, cord.y);
         piece.occupiedSpaces = newCords;
         for (Cords item : piece.occupiedSpaces)
             grid[item.x][item.y] = piece.id;
@@ -69,7 +77,60 @@ public class Board {
             return false;
     }
 
-    //TODO: Add rotate pieces
+    public boolean validRotation(Piece piece) {
+        TreeSet<Cords> newCords = new TreeSet<>();
+
+        for (Cords item : piece.occupiedSpaces) {
+            Cords newCord = getRotatedCord(item, piece.center);
+            newCords.add(newCord);
+        }
+
+        for (Cords newCord: newCords) {
+            if(outOfBounds(newCord) || !(grid[newCord.x][newCord.y] == -1 || grid[newCord.x][newCord.y] == piece.id))
+                return false;
+        }
+        return true;
+    }
+
+    public void rotatePiece(Piece piece) {
+        TreeSet<Cords> newCords = new TreeSet<>();
+
+        for (Cords item : piece.occupiedSpaces) {
+            grid[item.x][item.y] = -1;
+            Cords newCord = getRotatedCord(item, piece.center);
+            newCords.add(newCord);
+        }
+
+        piece.rotate();
+        piece.occupiedSpaces = newCords;
+        for (Cords item : piece.occupiedSpaces)
+            grid[item.x][item.y] = piece.id;
+    }
+
+    public Cords getRotatedCord(Cords A, Cords B) {
+        if(A.y == B.y) {
+            if(A.x != B.x)
+                return new Cords(B.x, A.y + A.x - B.x);
+        }
+        if(A.x < B.x) {
+            if(A.y < B.y)
+                return new Cords(2 * B.x - A.x, A.y);
+            else
+                return new Cords(A.x, 2 * B.y - A.y);
+        }
+        else if(A.x == B.x) {
+            if(A.y == B.y)
+                return A;
+            else
+                return new Cords(A.x + B.y - A.y, B.y);
+        }
+        else {
+            if(A.y <= B.y)
+                return new Cords(A.x, 2 * B.y - A.y);
+            else
+                return new Cords(2 * B.x - A.x, A.y);
+        }
+    }
 
     boolean validMove(Cords cord, Piece piece) {
         for (Cords item : piece.occupiedSpaces) {
@@ -84,9 +145,9 @@ public class Board {
         int[][] mat = PentominoDatabase.data[piece.id][piece.rotation];
         for (int i = 0; i < mat.length; i++)
             for (int j = 0; j < mat[0].length; j++)
-                if(mat[i][j] == 1) {
+                if(mat[i][j] != 0) {
                     Cords newCord = cord.add(i, j);
-                    if(mat[i][j] == 1) {
+                    if(mat[i][j] != 0) {
                         if (outOfBounds(newCord))
                             return false;
                         if (!(grid[newCord.x][newCord.y] == -1 || grid[newCord.x][newCord.x] == piece.id))

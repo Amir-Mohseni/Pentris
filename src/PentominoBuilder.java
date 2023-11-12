@@ -20,51 +20,51 @@ public class PentominoBuilder {
             {
                     // pentomino representation X
                     {0,1,0},
-                    {1,1,1},
+                    {1,2,1},
                     {0,1,0}
             },
             {
                     // pentomino representation I
                     {1},
                     {1},
-                    {1},
+                    {2},
                     {1},
                     {1}
             },
             {
                     // pentomino representation Z
                     {0,1,1},
-                    {0,1,0},
+                    {0,2,0},
                     {1,1,0}
             },
             {
                     // pentomino representation T
-                    {1,1,1},
+                    {1,2,1},
                     {0,1,0},
                     {0,1,0}
             },
             {
                     // pentomino representation U
                     {1,1},
-                    {1,0},
+                    {2,0},
                     {1,1}
             },
             {
                     // pentomino representation V
-                    {1,1,1},
+                    {2,1,1},
                     {1,0,0},
                     {1,0,0}
             },
             {
                     // pentomino representation W
                     {0,0,1},
-                    {0,1,1},
+                    {0,2,1},
                     {1,1,0}
             },
             {
                     // pentomino representation Y
                     {1,0},
-                    {1,1},
+                    {2,1},
                     {1,0},
                     {1,0}
             },
@@ -73,25 +73,25 @@ public class PentominoBuilder {
                     {1,0},
                     {1,0},
                     {1,0},
-                    {1,1}
+                    {2,1}
             },
             {
                     // pentomino representation P
                     {1, 1},
-                    {1, 1},
+                    {2, 1},
                     {1, 0},
             },
             {
                     // pentomino representation N
                     {0, 1},
-                    {1, 1},
+                    {2, 1},
                     {1, 0},
                     {1, 0},
             },
             {
                     // pentomino representation F
                     {0, 1, 1},
-                    {1, 1, 0},
+                    {1, 2, 0},
                     {0, 1, 0},
             }
     };
@@ -240,7 +240,7 @@ public class PentominoBuilder {
             //check if the first row is empty
             int empty=0;
             for (int[] datum : data) {
-                if (datum[0] == 1) {
+                if (datum[0] > 0) {
                     empty = 1;
                     break;
                 }
@@ -274,7 +274,7 @@ public class PentominoBuilder {
             int empty=0;
             for(int j=0;j<data[0].length;j++)
             {
-                if (data[0][j] == 1) {
+                if (data[0][j] > 0) {
                     empty = 1;
                     break;
                 }
@@ -360,16 +360,6 @@ public class PentominoBuilder {
      */
     public static boolean isEqual(int[][] data1, int[][] data2) {
         return Arrays.deepEquals(data1, data2);
-//        if(data1.length != data2.length)
-//            return false;
-//        for (int i = 0; i < data1.length; i++) {
-//            if(data1[i].length != data2[i].length)
-//                return false;
-//            for (int j = 0; j < data1[i].length; j++)
-//                if(data1[i][j] != data2[i][j])
-//                    return false;
-//        }
-//        return true;
     }
 
 
@@ -389,7 +379,7 @@ public class PentominoBuilder {
             //check if row i is empty
             int columnIsEmpty=0;
             for (int[] datum : data) {
-                if (datum[i] == 1) {
+                if (datum[i] > 0) {
                     columnIsEmpty = 1;
                     break;
                 }
@@ -407,7 +397,7 @@ public class PentominoBuilder {
             int rowIsEmpty=0;
             for(int j=0;j<data[i].length;j++)
             {
-                if (data[i][j] == 1) {
+                if (data[i][j] > 0) {
                     rowIsEmpty = 1;
                     break;
                 }

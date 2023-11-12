@@ -5,6 +5,7 @@ public class Piece {
     int id;
     int rotation;
     int NumberOfRotations;
+    Cords center;
     TreeSet<Cords> occupiedSpaces = new TreeSet<>();
     Piece(int id, int rotation) {
         this.id = id;

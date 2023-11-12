@@ -70,7 +70,8 @@ public class Tetris {
                             gameBoard.movePiece(new Cords(0, 1), gameBoard.pieces.get(id));
                         break;
                     case KeyEvent.VK_R:
-                        //Rotate
+                        if (gameBoard.validRotation(gameBoard.pieces.get(id)))
+                            gameBoard.rotatePiece(gameBoard.pieces.get(id));
                         break;
                     case KeyEvent.VK_SPACE:
                         while (gameBoard.applyGravity(gameBoard.pieces.get(id)))
