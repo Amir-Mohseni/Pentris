@@ -5,6 +5,17 @@ import java.util.TreeSet;
 
 public class Board {
     int[][] grid;
+
+    int[][][] rotationMatrix = {
+            {
+                    {0, 1},
+                    {-1, 0},
+            },
+            {
+                    {0, -1},
+                    {1, 0},
+            }
+    };
     int WIDTH;
     int HEIGHT;
     int NUMBER_OF_PIECES = 12;
@@ -32,11 +43,6 @@ public class Board {
 
     public void addPiece(Cords cord, Piece piece) {
         int[][] mat = PentominoDatabase.data[piece.id][piece.rotation];
-        for (int[] row : mat) {
-            for (int item : row)
-                System.out.print(item + " ");
-            System.out.println();
-        }
         TreeSet <Cords> newCords = new TreeSet<>();
         for (int i = 0; i < mat.length; i++)
             for (int j = 0; j < mat[0].length; j++)
@@ -53,7 +59,6 @@ public class Board {
     }
 
     public void movePiece(Cords cord, Piece piece) {
-        int[][] mat = PentominoDatabase.data[piece.id][piece.rotation];
         TreeSet <Cords> newCords = new TreeSet<>();
 
         for (Cords item : piece.occupiedSpaces) {
@@ -108,28 +113,9 @@ public class Board {
     }
 
     public Cords getRotatedCord(Cords A, Cords B) {
-        if(A.y == B.y) {
-            if(A.x != B.x)
-                return new Cords(B.x, A.y + A.x - B.x);
-        }
-        if(A.x < B.x) {
-            if(A.y < B.y)
-                return new Cords(2 * B.x - A.x, A.y);
-            else
-                return new Cords(A.x, 2 * B.y - A.y);
-        }
-        else if(A.x == B.x) {
-            if(A.y == B.y)
-                return A;
-            else
-                return new Cords(A.x + B.y - A.y, B.y);
-        }
-        else {
-            if(A.y <= B.y)
-                return new Cords(A.x, 2 * B.y - A.y);
-            else
-                return new Cords(2 * B.x - A.x, A.y);
-        }
+        Cords C = new Cords(A.x - B.x, A.y - B.y);
+        Cords D = new Cords(C.y, -C.x);
+        return D.add(B.x, B.y);
     }
 
     boolean validMove(Cords cord, Piece piece) {
@@ -172,5 +158,33 @@ public class Board {
             return true;
         else
             return false;
+    }
+
+    public void emptyFullRows() {
+        for (int i = 0; i < grid.length; i++) {
+            boolean full = true;
+            for (int j = 0; j < grid[i].length; j++)
+                if(grid[i][j] == -1) {
+                    full = false;
+                    break;
+                }
+            if(full) {
+                Arrays.fill(grid[i], -1);
+                for (int ii = 0; ii < grid.length - 1; ii++) {
+                    for (int jj = 0; jj < grid[ii].length; jj++)
+                        if(grid[ii][jj] != -1 && grid[ii + 1][jj] == -1) {
+                            grid[ii + 1][jj] = grid[ii][jj];
+                            grid[ii][jj] = -1;
+                        }
+                }
+            }
+        }
+    }
+
+    public int getPentominoIndex(int id) {
+        for (int i = 0; i < NUMBER_OF_PIECES; i++)
+            if(id == permutation[i])
+                return i;
+        return -1;
     }
 }

@@ -20,6 +20,7 @@ public class Tetris {
         Board gameBoard = tetris.gameBoard;
         long MOVE_TIMER = 2000;
         boolean gameEnded = false;
+//        test(gameBoard);
         int currentPiece = 0;
 
         while(!gameEnded) {
@@ -38,11 +39,14 @@ public class Tetris {
                 updateDisplay(gameBoard);
                 tempFrame.setVisible(true);
 
-                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
+                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER / 2);
+                updateDisplay(gameBoard);
+                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER / 2);
                 MOVE_TIMER *= 0.99;
 
                 updateDisplay(gameBoard);
             }
+            gameBoard.emptyFullRows();
             updateDisplay(gameBoard);
             currentPiece++;
             if(currentPiece == 12) {
@@ -83,6 +87,22 @@ public class Tetris {
             }
         });
         return tempFrame;
+    }
+
+    public static void test(Board gameBoard) {
+        for (int i = 0; i < gameBoard.NUMBER_OF_PIECES; i++) {
+            System.out.println("Piece " + (i + 1));
+            for (int j = 0; j < PentominoDatabase.data[i].length; j++) {
+                int[][] mat = PentominoDatabase.data[i][j];
+                for (int[] row: mat) {
+                    for (int item : row)
+                        System.out.print(item + " ");
+                    System.out.println();
+                }
+                System.out.println("###");
+            }
+            System.out.println("------------");
+        }
     }
 
     public static void updateDisplay(Board gameBoard) {
