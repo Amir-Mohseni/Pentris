@@ -161,6 +161,7 @@ public class Board {
     }
 
     public void emptyFullRows() {
+        boolean fullRow = false;
         for (int i = 0; i < grid.length; i++) {
             boolean full = true;
             for (int j = 0; j < grid[i].length; j++)
@@ -169,6 +170,7 @@ public class Board {
                     break;
                 }
             if(full) {
+                fullRow = true;
                 Arrays.fill(grid[i], -1);
                 for (int ii = 0; ii < grid.length - 1; ii++) {
                     for (int jj = 0; jj < grid[ii].length; jj++)
@@ -179,6 +181,8 @@ public class Board {
                 }
             }
         }
+        if(fullRow)
+            emptyFullRows();
     }
 
     public int getPentominoIndex(int id) {
