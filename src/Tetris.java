@@ -7,11 +7,11 @@ import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 public class Tetris {
-    Board gameBoard = new Board(5, 15);
+    Board gameBoard = new Board(5, 18);
     public static UI ui;
 
     Tetris() {
-        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 50);
+        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);
     }
     public static void main(String[] args) throws InterruptedException {
 
@@ -34,14 +34,9 @@ public class Tetris {
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
                 //Read inputs from keyboard
-                JFrame tempFrame = getjFrame(gameBoard, id);
-                tempFrame.setVisible(true);
-                updateDisplay(gameBoard);
-                tempFrame.setVisible(true);
+                getjFrame(gameBoard, id);
 
-                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER / 2);
-                updateDisplay(gameBoard);
-                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER / 2);
+                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
 
                 updateDisplay(gameBoard);
@@ -59,6 +54,8 @@ public class Tetris {
 
     private static JFrame getjFrame(Board gameBoard, int id) {
         JFrame tempFrame = new JFrame();
+        tempFrame.setFocusable(true);
+        tempFrame.setVisible(true);
         tempFrame.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
@@ -87,22 +84,6 @@ public class Tetris {
             }
         });
         return tempFrame;
-    }
-
-    public static void test(Board gameBoard) {
-        for (int i = 0; i < gameBoard.NUMBER_OF_PIECES; i++) {
-            System.out.println("Piece " + (i + 1));
-            for (int j = 0; j < PentominoDatabase.data[i].length; j++) {
-                int[][] mat = PentominoDatabase.data[i][j];
-                for (int[] row: mat) {
-                    for (int item : row)
-                        System.out.print(item + " ");
-                    System.out.println();
-                }
-                System.out.println("###");
-            }
-            System.out.println("------------");
-        }
     }
 
     public static void updateDisplay(Board gameBoard) {
