@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 public class Tetris {
@@ -54,7 +52,7 @@ public class Tetris {
         }
     }
 
-    private static JFrame getjFrame(Board gameBoard, int id) {
+    private static void getjFrame(Board gameBoard, int id) {
         JFrame tempFrame = new JFrame();
         tempFrame.setFocusable(true);
         tempFrame.setVisible(true);
@@ -99,7 +97,6 @@ public class Tetris {
                 }
             }
         });
-        return tempFrame;
     }
 
     public static void updateDisplay(Board gameBoard) {
