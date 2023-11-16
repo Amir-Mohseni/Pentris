@@ -62,21 +62,28 @@ public class Tetris {
                 switch (keyCode){
                     case KeyEvent.VK_A:
                     case KeyEvent.VK_LEFT:
-                        if (gameBoard.validMove(new Cords(0, -1), gameBoard.pieces.get(id)))
+                        if (gameBoard.validMove(new Cords(0, -1), gameBoard.pieces.get(id))) {
                             gameBoard.movePiece(new Cords(0, -1), gameBoard.pieces.get(id));
+                            updateDisplay(gameBoard);
+                        }
                         break;
                     case KeyEvent.VK_D:
                     case KeyEvent.VK_RIGHT:
-                        if (gameBoard.validMove(new Cords(0, 1), gameBoard.pieces.get(id)))
+                        if (gameBoard.validMove(new Cords(0, 1), gameBoard.pieces.get(id))) {
                             gameBoard.movePiece(new Cords(0, 1), gameBoard.pieces.get(id));
+                            updateDisplay(gameBoard);
+                        }
                         break;
                     case KeyEvent.VK_R:
-                        if (gameBoard.validRotation(gameBoard.pieces.get(id)))
+                        if (gameBoard.validRotation(gameBoard.pieces.get(id))) {
                             gameBoard.rotatePiece(gameBoard.pieces.get(id));
+                            updateDisplay(gameBoard);
+                        }
                         break;
                     case KeyEvent.VK_SPACE:
-                        while (gameBoard.applyGravity(gameBoard.pieces.get(id)))
-                            continue;
+                        while (gameBoard.applyGravity(gameBoard.pieces.get(id))) {
+                            updateDisplay(gameBoard);
+                        }
                         break;
                     default:
                         break;
