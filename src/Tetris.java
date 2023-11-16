@@ -41,7 +41,9 @@ public class Tetris {
 
                 updateDisplay(gameBoard);
             }
-            gameBoard.emptyFullRows();
+            //TODO Complete
+            //gameBoard.emptyFullRows();
+
             updateDisplay(gameBoard);
             currentPiece++;
             if(currentPiece == 12) {
@@ -77,6 +79,13 @@ public class Tetris {
                     case KeyEvent.VK_R:
                         if (gameBoard.validRotation(gameBoard.pieces.get(id))) {
                             gameBoard.rotatePiece(gameBoard.pieces.get(id));
+                            updateDisplay(gameBoard);
+                        }
+                        break;
+                    case KeyEvent.VK_S:
+                    case KeyEvent.VK_DOWN:
+                        if (gameBoard.validMove(new Cords(1, 0), gameBoard.pieces.get(id))) {
+                            gameBoard.movePiece(new Cords(1, 0), gameBoard.pieces.get(id));
                             updateDisplay(gameBoard);
                         }
                         break;

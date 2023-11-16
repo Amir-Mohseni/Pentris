@@ -66,7 +66,7 @@ public class Board {
             Cords newCord = item.add(cord.x, cord.y);
             newCords.add(newCord);
         }
-        piece.center.add(cord.x, cord.y);
+        piece.center = piece.center.add(cord.x, cord.y);
         piece.occupiedSpaces = newCords;
         for (Cords item : piece.occupiedSpaces)
             grid[item.x][item.y] = piece.id;
