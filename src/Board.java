@@ -20,6 +20,8 @@ public class Board {
     int[] permutation = new int[NUMBER_OF_PIECES];
     ArrayList <Piece> pieces = new ArrayList<>();
 
+    private int[] emptyRow = new int[]{-1, -1, -1, -1, -1};
+
     Board(int width, int height) {
         Random rand = new Random();
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
@@ -185,58 +187,57 @@ public class Board {
 
     public void emptyFullRows2() {
         int totalFullRows = 0;
-        Integer[] fullRows = this.getFullRows();
+        List<Integer> fullRows = this.getFullRows();
+        List<int[]> nonFullRows = new ArrayList<>();
 
-        while(fullRows.length != 0){
-            totalFullRows += fullRows.length;
-
-            for (Integer row : fullRows){
-                int[] clearedRow = new int[this.WIDTH];
-                Arrays.fill(clearedRow, -1);
-                this.grid[row] = clearedRow;
+        while(!fullRows.isEmpty()){
+            for (int row = 0; row < this.grid.length; row++){
+                if (fullRows.contains(row)){
+                    continue;
+                }
+                nonFullRows.add(this.grid[row]);
             }
+
+            totalFullRows += fullRows.size();
+
+
+            int[][] newGrid = new int[this.HEIGHT][this.WIDTH];
+            for (int[] row : newGrid){
+                Arrays.fill(row, -1);
+            }
+
+            // access nonFullRows and grid backwards
+            for (int i = 1; i < nonFullRows.size() - 1; i++){
+                newGrid[newGrid.length - i] = nonFullRows.get(nonFullRows.size() - i);
+            }
+
+            this.grid = newGrid;
 
             fullRows = this.getFullRows();
         }
 
-        // now all the full rows should be gone
-        // move rows to the left of the removed rows to the right
-
-        // collect non-empty rows
-        List<int[]> nonEmptyRowsList = new ArrayList<>();
-        for (int[] row : this.grid){
-            if (!arrayContainsFull(row, -1)){
-                nonEmptyRowsList.add(row);
-            }
-        }
-
-        // create a new grid
-        int[][] newGrid = new int[HEIGHT][WIDTH];
-
-        for (int row = 0; row < nonEmptyRowsList.size(); row++){
-            newGrid[newGrid.length - row] = nonEmptyRowsList.get(nonEmptyRowsList.size() - row);
-        }
-
-        this.grid = newGrid;
-
     }
 
 
 
-    public boolean arrayContainsFull(int[] arr, int val){
-        return IntStream.of(arr).anyMatch(x -> x == val);
+    public boolean arrayContainsFull(int[] arr){
+        for (int i : arr){
+            if (i==-1)
+                return false;
+        }
+        return true;
     }
 
-    private Integer[] getFullRows(){
+    private List<Integer> getFullRows(){
         List<Integer> fullRows = new ArrayList<>();
         for (int row = 0; row < this.grid.length; row++){
             int[] currentRow = this.grid[row];
 
-            if (!arrayContainsFull(currentRow, -1)){
+            if (arrayContainsFull(currentRow)){
                 fullRows.add(row);
             }
         }
-        return fullRows.toArray(new Integer[0]);
+        return fullRows;
     }
 
     public int getPentominoIndex(int id) {
@@ -247,8 +248,9 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Board board = new Board(10,10);
-        board.grid[0] = new int[]{1,1,1,1,1,1,1,1,1,-1};
-        System.out.println(!board.arrayContainsFull(board.grid[0], -1));;
+        Board board = new Board(5,15);
+//        board.grid[0] = new int[]{-1, -1, 4, 4, -1};
+        int[] row = new int[]{4, 4, 4 ,4, 4};
+        System.out.println(board.arrayContainsFull(row));
     }
 }
