@@ -16,7 +16,7 @@ public class Tetris {
         Tetris tetris = new Tetris();
         Scanner scanner = new Scanner(System.in);
         Board gameBoard = tetris.gameBoard;
-        long MOVE_TIMER = 10 * 1000;
+        long MOVE_TIMER = 2 * 1000;
         boolean gameEnded = false;
 //        test(gameBoard);
         int currentPiece = 0;
