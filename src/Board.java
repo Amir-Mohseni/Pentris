@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class Board {
     int[][] grid;
@@ -185,10 +183,72 @@ public class Board {
             emptyFullRows();
     }
 
+    public void emptyFullRows2() {
+        int totalFullRows = 0;
+        Integer[] fullRows = this.getFullRows();
+
+        while(fullRows.length != 0){
+            totalFullRows += fullRows.length;
+
+            for (Integer row : fullRows){
+                int[] clearedRow = new int[this.WIDTH];
+                Arrays.fill(clearedRow, -1);
+                this.grid[row] = clearedRow;
+            }
+
+            fullRows = this.getFullRows();
+        }
+
+        // now all the full rows should be gone
+        // move rows to the left of the removed rows to the right
+
+        // collect non-empty rows
+        List<int[]> nonEmptyRowsList = new ArrayList<>();
+        for (int[] row : this.grid){
+            if (!arrayContainsFull(row, -1)){
+                nonEmptyRowsList.add(row);
+            }
+        }
+
+        // create a new grid
+        int[][] newGrid = new int[HEIGHT][WIDTH];
+
+        for (int row = 0; row < nonEmptyRowsList.size(); row++){
+            newGrid[newGrid.length - row] = nonEmptyRowsList.get(nonEmptyRowsList.size() - row);
+        }
+
+        this.grid = newGrid;
+
+    }
+
+
+
+    public boolean arrayContainsFull(int[] arr, int val){
+        return IntStream.of(arr).anyMatch(x -> x == val);
+    }
+
+    private Integer[] getFullRows(){
+        List<Integer> fullRows = new ArrayList<>();
+        for (int row = 0; row < this.grid.length; row++){
+            int[] currentRow = this.grid[row];
+
+            if (!arrayContainsFull(currentRow, -1)){
+                fullRows.add(row);
+            }
+        }
+        return fullRows.toArray(new Integer[0]);
+    }
+
     public int getPentominoIndex(int id) {
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
             if(id == permutation[i])
                 return i;
         return -1;
+    }
+
+    public static void main(String[] args) {
+        Board board = new Board(10,10);
+        board.grid[0] = new int[]{1,1,1,1,1,1,1,1,1,-1};
+        System.out.println(!board.arrayContainsFull(board.grid[0], -1));;
     }
 }
