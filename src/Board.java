@@ -185,7 +185,7 @@ public class Board {
             emptyFullRows();
     }
 
-    public void emptyFullRows2() {
+    public int emptyFullRows2() {
         int totalFullRows = 0;
         List<Integer> fullRows = this.getFullRows();
         List<int[]> nonFullRows = new ArrayList<>();
@@ -215,7 +215,7 @@ public class Board {
 
             fullRows = this.getFullRows();
         }
-
+        return totalFullRows;
     }
 
 
