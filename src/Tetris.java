@@ -24,7 +24,8 @@ public class Tetris {
         while(!gameEnded) {
             int id = gameBoard.permutation[currentPiece];
             if(!gameBoard.validPlacement(new Cords(1, 2), gameBoard.pieces.get(id))) {
-                System.out.println("Game Over");
+                JOptionPane.showMessageDialog(null, "You Lost");
+                System.exit(0);
                 gameEnded = true;
                 break;
             }
@@ -46,7 +47,9 @@ public class Tetris {
             currentPiece++;
             if(currentPiece == 12) {
                 gameEnded = true;
-                System.out.println("You Won!");
+//                System.out.println("You Won!");
+                JOptionPane.showMessageDialog(null, "You Won");
+                System.exit(0);
                 break;
             }
         }
