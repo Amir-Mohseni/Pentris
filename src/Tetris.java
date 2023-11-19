@@ -41,7 +41,7 @@ public class Tetris {
                 updateDisplay(gameBoard);
             }
             //TODO Complete
-            //gameBoard.emptyFullRows();
+            gameBoard.emptyFullRows2();
 
             updateDisplay(gameBoard);
             currentPiece++;
