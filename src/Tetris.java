@@ -75,8 +75,14 @@ public class Tetris {
                         }
                         break;
                     case KeyEvent.VK_R:
-                        if (gameBoard.validRotation(gameBoard.pieces.get(id))) {
-                            gameBoard.rotatePiece(gameBoard.pieces.get(id));
+                        if (gameBoard.validRotationClockW(gameBoard.pieces.get(id))) {
+                            gameBoard.rotatePieceClockW(gameBoard.pieces.get(id));
+                            updateDisplay(gameBoard);
+                        }
+                        break;
+                    case KeyEvent.VK_Q:
+                        if (gameBoard.validRotationAntiClockW(gameBoard.pieces.get(id))) {
+                            gameBoard.rotatePieceAntiClockW(gameBoard.pieces.get(id));
                             updateDisplay(gameBoard);
                         }
                         break;

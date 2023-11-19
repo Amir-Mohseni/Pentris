@@ -82,11 +82,11 @@ public class Board {
             return false;
     }
 
-    public boolean validRotation(Piece piece) {
+    public boolean validRotationClockW(Piece piece) {
         TreeSet<Cords> newCords = new TreeSet<>();
 
         for (Cords item : piece.occupiedSpaces) {
-            Cords newCord = getRotatedCord(item, piece.center);
+            Cords newCord = getRotatedCordClockW(item, piece.center);
             newCords.add(newCord);
         }
 
@@ -97,12 +97,41 @@ public class Board {
         return true;
     }
 
-    public void rotatePiece(Piece piece) {
+    public boolean validRotationAntiClockW(Piece piece) {
+        TreeSet<Cords> newCords = new TreeSet<>();
+
+        for (Cords item : piece.occupiedSpaces) {
+            Cords newCord = getRotatedCordAntiClockW(item, piece.center);
+            newCords.add(newCord);
+        }
+
+        for (Cords newCord: newCords) {
+            if(outOfBounds(newCord) || !(grid[newCord.x][newCord.y] == -1 || grid[newCord.x][newCord.y] == piece.id))
+                return false;
+        }
+        return true;
+    }
+
+    public void rotatePieceClockW(Piece piece) {
         TreeSet<Cords> newCords = new TreeSet<>();
 
         for (Cords item : piece.occupiedSpaces) {
             grid[item.x][item.y] = -1;
-            Cords newCord = getRotatedCord(item, piece.center);
+            Cords newCord = getRotatedCordClockW(item, piece.center);
+            newCords.add(newCord);
+        }
+
+        piece.rotate();
+        piece.occupiedSpaces = newCords;
+        for (Cords item : piece.occupiedSpaces)
+            grid[item.x][item.y] = piece.id;
+    }
+    public void rotatePieceAntiClockW(Piece piece) {
+        TreeSet<Cords> newCords = new TreeSet<>();
+
+        for (Cords item : piece.occupiedSpaces) {
+            grid[item.x][item.y] = -1;
+            Cords newCord = getRotatedCordAntiClockW(item, piece.center);
             newCords.add(newCord);
         }
 
@@ -112,9 +141,15 @@ public class Board {
             grid[item.x][item.y] = piece.id;
     }
 
-    public Cords getRotatedCord(Cords A, Cords B) {
+    public Cords getRotatedCordClockW(Cords A, Cords B) {
         Cords C = new Cords(A.x - B.x, A.y - B.y);
         Cords D = new Cords(C.y, -C.x);
+        return D.add(B.x, B.y);
+    }
+
+    public Cords getRotatedCordAntiClockW(Cords A, Cords B) {
+        Cords C = new Cords(A.x - B.x, A.y - B.y);
+        Cords D = new Cords(-C.y, C.x);
         return D.add(B.x, B.y);
     }
 
