@@ -16,7 +16,7 @@ public class Tetris {
         Tetris tetris = new Tetris();
         Scanner scanner = new Scanner(System.in);
         Board gameBoard = tetris.gameBoard;
-        long MOVE_TIMER = 2000;
+        long MOVE_TIMER = 10 * 1000;
         boolean gameEnded = false;
 //        test(gameBoard);
         int currentPiece = 0;
@@ -32,7 +32,7 @@ public class Tetris {
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
                 //Read inputs from keyboard
-                getjFrame(gameBoard, id);
+                getJFrame(gameBoard, id);
 
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
@@ -52,7 +52,7 @@ public class Tetris {
         }
     }
 
-    private static void getjFrame(Board gameBoard, int id) {
+    private static void getJFrame(Board gameBoard, int id) {
         JFrame tempFrame = new JFrame();
         tempFrame.setFocusable(true);
         tempFrame.setVisible(true);
