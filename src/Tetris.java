@@ -22,7 +22,7 @@ public class Tetris {
         int currentPiece = 0;
 
         while(!gameEnded) {
-            int id = gameBoard.permutation[currentPiece];
+            int id = gameBoard.permutation[currentPiece%12];
             if(!gameBoard.validPlacement(new Cords(1, 2), gameBoard.pieces.get(id))) {
                 System.out.println("Game Over");
                 gameEnded = true;
@@ -44,7 +44,7 @@ public class Tetris {
 
             updateDisplay(gameBoard);
             currentPiece++;
-            if(currentPiece == 12) {
+            if(currentPiece == 1200000) {
                 gameEnded = true;
                 System.out.println("You Won!");
                 break;

@@ -237,13 +237,49 @@ public class Board {
             }
         }
 
+        // access the grid backwards to apply gravity
+        for (int i = 0; i < 5; i++){
+            for (Integer id : groupIDs.reversed()){
+                int leastFreeSpaceBelow = Integer.MAX_VALUE;
+                for (int col = 0; col < chunkGroups[0].length; col++){
+                    int freeSpaceBelow = 0;
+                    for (int row = 0; row < chunkGroups.length; row++){
+                        int elementVal = chunkGroups[chunkGroups.length - 1 - row][col];
+                        if (elementVal == -1){
+                            freeSpaceBelow++;
+                        } else if(elementVal != -1 && elementVal != id){
+                            freeSpaceBelow = 0;
+                        } else {
+                            if (freeSpaceBelow < leastFreeSpaceBelow){
+                                leastFreeSpaceBelow = freeSpaceBelow;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (leastFreeSpaceBelow <= 0) {
+                    continue;
+                }
+
+                for (int col = 0; col < chunkGroups[0].length; col++){
+                    for (int row = 0; row < chunkGroups.length; row++){
+                        int elementVal = chunkGroups[chunkGroups.length - 1 - row][col];
+                        if (elementVal == id){
+                            chunkGroups[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
+                            chunkGroups[chunkGroups.length - 1 - row][col] = -1;
+
+                            grid[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
+                            grid[chunkGroups.length - 1 - row][col] = -1;
+                        }
+                    }
+                }
+            }
+        }
+
         for (int[] row : chunkGroups){
             System.out.println(Arrays.toString(row));
         }
-
-//        for (Integer id : groupIDs){
-//            for (int col = 0; col < this.)
-//        }
     }
 
     public int[][] viral(int row, int col, int val, int[][] chunkGroups){
@@ -327,5 +363,8 @@ public class Board {
 //        for (int[] row : resultChunks){
 //            System.out.println(Arrays.toString(row));
 //        }
+
+        UI ui = new UI(board.WIDTH, board.HEIGHT, 45);
+        ui.setState(Tetris.transpose(board.grid));
     }
 }
