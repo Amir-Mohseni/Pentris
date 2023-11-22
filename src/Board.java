@@ -215,6 +215,9 @@ public class Board {
 
             fullRows = this.getFullRows();
         }
+
+        gravityChunks();
+
         return totalFullRows;
     }
 
