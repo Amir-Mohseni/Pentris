@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class Board {
     int[][] grid;
@@ -21,6 +19,8 @@ public class Board {
     int NUMBER_OF_PIECES = 12;
     int[] permutation = new int[NUMBER_OF_PIECES];
     ArrayList <Piece> pieces = new ArrayList<>();
+
+    private int[] emptyRow = new int[]{-1, -1, -1, -1, -1};
 
     Board(int width, int height) {
         Random rand = new Random();
@@ -66,7 +66,7 @@ public class Board {
             Cords newCord = item.add(cord.x, cord.y);
             newCords.add(newCord);
         }
-        piece.center.add(cord.x, cord.y);
+        piece.center = piece.center.add(cord.x, cord.y);
         piece.occupiedSpaces = newCords;
         for (Cords item : piece.occupiedSpaces)
             grid[item.x][item.y] = piece.id;
@@ -82,11 +82,11 @@ public class Board {
             return false;
     }
 
-    public boolean validRotation(Piece piece) {
+    public boolean validRotationClockW(Piece piece) {
         TreeSet<Cords> newCords = new TreeSet<>();
 
         for (Cords item : piece.occupiedSpaces) {
-            Cords newCord = getRotatedCord(item, piece.center);
+            Cords newCord = getRotatedCordClockW(item, piece.center);
             newCords.add(newCord);
         }
 
@@ -97,12 +97,41 @@ public class Board {
         return true;
     }
 
-    public void rotatePiece(Piece piece) {
+    public boolean validRotationAntiClockW(Piece piece) {
+        TreeSet<Cords> newCords = new TreeSet<>();
+
+        for (Cords item : piece.occupiedSpaces) {
+            Cords newCord = getRotatedCordAntiClockW(item, piece.center);
+            newCords.add(newCord);
+        }
+
+        for (Cords newCord: newCords) {
+            if(outOfBounds(newCord) || !(grid[newCord.x][newCord.y] == -1 || grid[newCord.x][newCord.y] == piece.id))
+                return false;
+        }
+        return true;
+    }
+
+    public void rotatePieceClockW(Piece piece) {
         TreeSet<Cords> newCords = new TreeSet<>();
 
         for (Cords item : piece.occupiedSpaces) {
             grid[item.x][item.y] = -1;
-            Cords newCord = getRotatedCord(item, piece.center);
+            Cords newCord = getRotatedCordClockW(item, piece.center);
+            newCords.add(newCord);
+        }
+
+        piece.rotate();
+        piece.occupiedSpaces = newCords;
+        for (Cords item : piece.occupiedSpaces)
+            grid[item.x][item.y] = piece.id;
+    }
+    public void rotatePieceAntiClockW(Piece piece) {
+        TreeSet<Cords> newCords = new TreeSet<>();
+
+        for (Cords item : piece.occupiedSpaces) {
+            grid[item.x][item.y] = -1;
+            Cords newCord = getRotatedCordAntiClockW(item, piece.center);
             newCords.add(newCord);
         }
 
@@ -112,9 +141,15 @@ public class Board {
             grid[item.x][item.y] = piece.id;
     }
 
-    public Cords getRotatedCord(Cords A, Cords B) {
+    public Cords getRotatedCordClockW(Cords A, Cords B) {
         Cords C = new Cords(A.x - B.x, A.y - B.y);
         Cords D = new Cords(C.y, -C.x);
+        return D.add(B.x, B.y);
+    }
+
+    public Cords getRotatedCordAntiClockW(Cords A, Cords B) {
+        Cords C = new Cords(A.x - B.x, A.y - B.y);
+        Cords D = new Cords(-C.y, C.x);
         return D.add(B.x, B.y);
     }
 
@@ -185,10 +220,72 @@ public class Board {
             emptyFullRows();
     }
 
+    public int emptyFullRows2() {
+        int totalFullRows = 0;
+        List<Integer> fullRows = this.getFullRows();
+        List<int[]> nonFullRows = new ArrayList<>();
+
+        while(!fullRows.isEmpty()){
+            for (int row = 0; row < this.grid.length; row++){
+                if (fullRows.contains(row)){
+                    continue;
+                }
+                nonFullRows.add(this.grid[row]);
+            }
+
+            totalFullRows += fullRows.size();
+
+
+            int[][] newGrid = new int[this.HEIGHT][this.WIDTH];
+            for (int[] row : newGrid){
+                Arrays.fill(row, -1);
+            }
+
+            // access nonFullRows and grid backwards
+            for (int i = 1; i < nonFullRows.size() - 1; i++){
+                newGrid[newGrid.length - i] = nonFullRows.get(nonFullRows.size() - i);
+            }
+
+            this.grid = newGrid;
+
+            fullRows = this.getFullRows();
+        }
+        return totalFullRows;
+    }
+
+
+
+    public boolean arrayContainsFull(int[] arr){
+        for (int i : arr){
+            if (i==-1)
+                return false;
+        }
+        return true;
+    }
+
+    private List<Integer> getFullRows(){
+        List<Integer> fullRows = new ArrayList<>();
+        for (int row = 0; row < this.grid.length; row++){
+            int[] currentRow = this.grid[row];
+
+            if (arrayContainsFull(currentRow)){
+                fullRows.add(row);
+            }
+        }
+        return fullRows;
+    }
+
     public int getPentominoIndex(int id) {
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
             if(id == permutation[i])
                 return i;
         return -1;
+    }
+
+    public static void main(String[] args) {
+        Board board = new Board(5,15);
+//        board.grid[0] = new int[]{-1, -1, 4, 4, -1};
+        int[] row = new int[]{4, 4, 4 ,4, 4};
+        System.out.println(board.arrayContainsFull(row));
     }
 }
