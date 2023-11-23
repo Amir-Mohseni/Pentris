@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class Board implements Cloneable {
     int[][] grid;
@@ -33,8 +32,8 @@ public class Board implements Cloneable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    protected Board clone() throws CloneNotSupportedException {
+        return (Board) super.clone();
     }
 
     public void addPiece(Cords cord, Piece piece) {
@@ -167,7 +166,7 @@ public class Board implements Cloneable {
                     if(mat[i][j] != 0) {
                         if (outOfBounds(newCord))
                             return false;
-                        if (!(grid[newCord.x][newCord.y] == -1 || grid[newCord.x][newCord.x] == piece.id))
+                        if (!(grid[newCord.x][newCord.y] == -1 || grid[newCord.x][newCord.y] == piece.id))
                             return false;
                     }
                 }

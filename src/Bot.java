@@ -1,19 +1,25 @@
 import java.util.concurrent.TimeUnit;
 
 public class Bot {
-    static Board gameBoard = new Board(5, 18);
-    public static UI ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);;
+    Board gameBoard = new Board(5, 18);
+    public static UI ui;
+
     static final char[] moves = {'A', 'S', 'D', 'Q', 'R', 'N'};
+
+    Bot() {
+        gameBoard = new Board(5, 18);
+//        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);
+    }
 
     public static Board getMaxScore(Board currentBoard, int id, int depthLimit) throws CloneNotSupportedException {
         if(depthLimit == 0)
             return currentBoard;
-        Board bestBoard = gameBoard;
-        int bestScore = gameBoard.score;
+        Board bestBoard = currentBoard.clone();
+        int bestScore = bestBoard.score;
         for (char move: moves) {
-            Board newBoard = (Board) gameBoard.clone();
+            Board newBoard = currentBoard.clone();
             newBoard.applyButtonPress(move, id);
-            newBoard.score += newBoard.emptyFullRows2() + gameBoard.getHighestEmptyRow();
+            newBoard.score += newBoard.emptyFullRows2();
             newBoard = getMaxScore(newBoard, id, depthLimit - 1);
             if (newBoard.score > bestScore) {
                 bestBoard = newBoard;
@@ -25,7 +31,8 @@ public class Bot {
 
 
 
-    public static void main(String[] args) throws CloneNotSupportedException, InterruptedException {
+    public Board run() throws CloneNotSupportedException, InterruptedException {
+        Board gameBoard = this.gameBoard;
         int currentPiece = 0;
         int MOVE_TIMER = 2 * 1000;
         while(true) {
@@ -33,25 +40,29 @@ public class Bot {
             if(!gameBoard.validPlacement(new Cords(1, 2), gameBoard.pieces.get(id)))
                 break;
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
-            updateDisplay(gameBoard);
+//            updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
-                gameBoard = getMaxScore(gameBoard, id, 10);
-                gameBoard.score += gameBoard.emptyFullRows2() + gameBoard.getHighestEmptyRow();
-                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
+                gameBoard = getMaxScore(gameBoard.clone(), id, 5);
+                gameBoard.score += gameBoard.emptyFullRows2();
+//                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
             }
-            gameBoard.score += gameBoard.emptyFullRows2() + gameBoard.getHighestEmptyRow();
-            updateDisplay(gameBoard);
+            gameBoard.score += gameBoard.emptyFullRows2();
+
+//            updateDisplay(gameBoard);
             currentPiece++;
             if(currentPiece == 12) {
-                break;
+                return gameBoard;
             }
         }
+        return gameBoard;
     }
 
-    public static void updateDisplay(Board gameBoard) {
+/*    public static void updateDisplay(Board gameBoard) {
         ui.setState(transpose(gameBoard.grid));
     }
+
+ */
 
     public static int[][] transpose(int[][] curGrid) {
         int n = curGrid[0].length, m = curGrid.length;
