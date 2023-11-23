@@ -35,7 +35,7 @@ public class Bot {
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
-                gameBoard = getMaxScore(gameBoard, id, 8);
+                gameBoard = getMaxScore(gameBoard, id, 10);
                 gameBoard.score += gameBoard.emptyFullRows2() + gameBoard.getHighestEmptyRow();
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
