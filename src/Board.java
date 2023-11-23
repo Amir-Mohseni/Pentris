@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Board {
+public class Board implements Cloneable {
     int[][] grid;
 
     int[][][] rotationMatrix = {
@@ -18,6 +18,8 @@ public class Board {
     int HEIGHT;
     int NUMBER_OF_PIECES = 12;
     int[] permutation = new int[NUMBER_OF_PIECES];
+
+    int score = 0;
     ArrayList <Piece> pieces = new ArrayList<>();
 
     private int[] emptyRow = new int[]{-1, -1, -1, -1, -1};
@@ -39,6 +41,11 @@ public class Board {
             for (int j = 0; j < WIDTH; j++) {
                 grid[i][j] = -1;
             }
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public void addPiece(Cords cord, Piece piece) {
@@ -280,6 +287,71 @@ public class Board {
             if(id == permutation[i])
                 return i;
         return -1;
+    }
+
+    public int getHighestEmptyRow() {
+        for (int row = 0; row < this.grid.length; row++) {
+            boolean empty = true;
+            for (int element: this.grid[row])
+                if(element != -1) {
+                    empty = false;
+                    break;
+                }
+            if(!empty)
+                return row;
+        }
+        return this.grid.length;
+    }
+
+    public void pressA(int id) {
+        if (this.validMove(new Cords(0, -1), this.pieces.get(id)))
+            this.movePiece(new Cords(0, -1), this.pieces.get(id));
+    }
+
+    public void pressD(int id) {
+        if (this.validMove(new Cords(0, 1), this.pieces.get(id))) {
+            this.movePiece(new Cords(0, 1), this.pieces.get(id));
+        }
+    }
+
+    public void pressR(int id) {
+        if (this.validRotationClockW(this.pieces.get(id))) {
+            this.rotatePieceClockW(this.pieces.get(id));
+        }
+    }
+
+    public void pressQ(int id) {
+        if (this.validRotationAntiClockW(this.pieces.get(id))) {
+            this.rotatePieceAntiClockW(this.pieces.get(id));
+        }
+    }
+
+    public void pressS(int id) {
+        if (this.validMove(new Cords(1, 0), this.pieces.get(id))) {
+            this.movePiece(new Cords(1, 0), this.pieces.get(id));
+        }
+    }
+
+    public void applyButtonPress(char move, int id) {
+        switch (move) {
+            case 'A':
+                this.pressA(id);
+                break;
+            case 'D':
+                this.pressD(id);
+                break;
+            case 'Q':
+                this.pressQ(id);
+                break;
+            case 'R':
+                this.pressR(id);
+                break;
+            case 'S':
+                this.pressS(id);
+                break;
+            default:
+                break;
+        }
     }
 
     public static void main(String[] args) {

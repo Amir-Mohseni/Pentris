@@ -14,11 +14,9 @@ public class Tetris {
     public static void main(String[] args) throws InterruptedException {
 
         Tetris tetris = new Tetris();
-        Scanner scanner = new Scanner(System.in);
         Board gameBoard = tetris.gameBoard;
         long MOVE_TIMER = 2 * 1000;
         boolean gameEnded = false;
-//        test(gameBoard);
         int currentPiece = 0;
 
         while(!gameEnded) {
@@ -40,17 +38,16 @@ public class Tetris {
 
                 updateDisplay(gameBoard);
             }
-            //TODO Complete
             gameBoard.emptyFullRows2();
 
             updateDisplay(gameBoard);
             currentPiece++;
             if(currentPiece == 12) {
-                gameEnded = true;
 //                System.out.println("You Won!");
                 JOptionPane.showMessageDialog(null, "You Won");
                 System.exit(0);
-                break;
+//                currentPiece = 0;
+//                gameBoard.randomShuffle(gameBoard.permutation);
             }
         }
     }
@@ -67,39 +64,38 @@ public class Tetris {
                     case KeyEvent.VK_LEFT:
                         if (gameBoard.validMove(new Cords(0, -1), gameBoard.pieces.get(id))) {
                             gameBoard.movePiece(new Cords(0, -1), gameBoard.pieces.get(id));
-                            updateDisplay(gameBoard);
                         }
+                        updateDisplay(gameBoard);
                         break;
                     case KeyEvent.VK_D:
                     case KeyEvent.VK_RIGHT:
                         if (gameBoard.validMove(new Cords(0, 1), gameBoard.pieces.get(id))) {
                             gameBoard.movePiece(new Cords(0, 1), gameBoard.pieces.get(id));
-                            updateDisplay(gameBoard);
                         }
+                        updateDisplay(gameBoard);
                         break;
                     case KeyEvent.VK_R:
                         if (gameBoard.validRotationClockW(gameBoard.pieces.get(id))) {
                             gameBoard.rotatePieceClockW(gameBoard.pieces.get(id));
-                            updateDisplay(gameBoard);
                         }
+                        updateDisplay(gameBoard);
                         break;
                     case KeyEvent.VK_Q:
                         if (gameBoard.validRotationAntiClockW(gameBoard.pieces.get(id))) {
                             gameBoard.rotatePieceAntiClockW(gameBoard.pieces.get(id));
-                            updateDisplay(gameBoard);
                         }
+                        updateDisplay(gameBoard);
                         break;
                     case KeyEvent.VK_S:
                     case KeyEvent.VK_DOWN:
                         if (gameBoard.validMove(new Cords(1, 0), gameBoard.pieces.get(id))) {
                             gameBoard.movePiece(new Cords(1, 0), gameBoard.pieces.get(id));
-                            updateDisplay(gameBoard);
                         }
+                        updateDisplay(gameBoard);
                         break;
                     case KeyEvent.VK_SPACE:
-                        while (gameBoard.applyGravity(gameBoard.pieces.get(id))) {
+                        while (gameBoard.applyGravity(gameBoard.pieces.get(id)))
                             updateDisplay(gameBoard);
-                        }
                         break;
                     default:
                         break;
