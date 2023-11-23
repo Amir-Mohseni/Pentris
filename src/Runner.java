@@ -3,6 +3,10 @@ public class Runner {
         int NUM_OF_TEST = 10000;
 
         Board bestBoard = new Board(5, 18);
+        UI bestUI = new UI(bestBoard.WIDTH, bestBoard.HEIGHT, 45);
+
+//        Bot newBot = new Bot();
+//        newBot.run();
 
         for (int i = 0; i < NUM_OF_TEST; i++) {
             Bot newBot = new Bot();
@@ -14,12 +18,11 @@ public class Runner {
             if(i % 100 == 0) {
                 System.out.println("---------------");
                 System.out.println(bestBoard.score);
+                bestUI.setState(transpose(bestBoard.grid));
             }
 
 
         }
-        UI bestUI = new UI(bestBoard.WIDTH, bestBoard.HEIGHT, 45);
-        bestUI.setState(transpose(bestBoard.grid));
     }
 
     public static int[][] transpose(int[][] curGrid) {

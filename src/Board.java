@@ -10,8 +10,6 @@ public class Board implements Cloneable {
     int score = 0;
     ArrayList <Piece> pieces = new ArrayList<>();
 
-    private int[] emptyRow = new int[]{-1, -1, -1, -1, -1};
-
     Board(int width, int height) {
         Random rand = new Random();
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
@@ -36,6 +34,7 @@ public class Board implements Cloneable {
         Board clonedObject = (Board) super.clone();
         clonedObject.grid = grid.clone();
         clonedObject.permutation = permutation.clone();
+        clonedObject.pieces = (ArrayList<Piece>) pieces.clone();
         return clonedObject;
     }
 
