@@ -33,7 +33,10 @@ public class Board implements Cloneable {
 
     @Override
     protected Board clone() throws CloneNotSupportedException {
-        return (Board) super.clone();
+        Board clonedObject = (Board) super.clone();
+        clonedObject.grid = grid.clone();
+        clonedObject.permutation = permutation.clone();
+        return clonedObject;
     }
 
     public void addPiece(Cords cord, Piece piece) {
