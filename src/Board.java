@@ -3,17 +3,6 @@ import java.util.stream.IntStream;
 
 public class Board implements Cloneable {
     int[][] grid;
-
-    int[][][] rotationMatrix = {
-            {
-                    {0, 1},
-                    {-1, 0},
-            },
-            {
-                    {0, -1},
-                    {1, 0},
-            }
-    };
     int WIDTH;
     int HEIGHT;
     int NUMBER_OF_PIECES = 12;
@@ -290,7 +279,7 @@ public class Board implements Cloneable {
     }
 
     public int getHighestEmptyRow() {
-        for (int row = 0; row < this.grid.length; row++) {
+        for (int row = this.grid.length - 1; row >= 0; row--) {
             boolean empty = true;
             for (int element: this.grid[row])
                 if(element != -1) {
@@ -300,7 +289,7 @@ public class Board implements Cloneable {
             if(!empty)
                 return row;
         }
-        return this.grid.length;
+        return 0;
     }
 
     public void pressA(int id) {
