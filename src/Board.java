@@ -250,10 +250,93 @@ public class Board {
 
             fullRows = this.getFullRows();
         }
+
+        gravityChunks();
+
         return totalFullRows;
     }
 
+    public void gravityChunks(){
+        int groups = 0;
+        List<Integer> groupIDs = new ArrayList<>();
 
+        int[][] chunkGroups = new int[this.HEIGHT][this.WIDTH];
+        for (int[] row : chunkGroups){
+            Arrays.fill(row, -1);
+        }
+
+        // iterate through the grid
+        for (int row = 0; row < this.grid.length; row++){
+            for (int col = 0; col < this.grid[row].length; col++){
+                if (this.grid[row][col] != -1 && chunkGroups[row][col] == -1){
+                    groupIDs.add(groups);
+                    chunkGroups = viral(row, col, groups++, chunkGroups);
+                }
+            }
+        }
+
+        // access the grid backwards to apply gravity
+        for (int i = 0; i < 5; i++){
+            for (Integer id : groupIDs.reversed()){
+                int leastFreeSpaceBelow = Integer.MAX_VALUE;
+                for (int col = 0; col < chunkGroups[0].length; col++){
+                    int freeSpaceBelow = 0;
+                    for (int row = 0; row < chunkGroups.length; row++){
+                        int elementVal = chunkGroups[chunkGroups.length - 1 - row][col];
+                        if (elementVal == -1){
+                            freeSpaceBelow++;
+                        } else if(elementVal != -1 && elementVal != id){
+                            freeSpaceBelow = 0;
+                        } else {
+                            if (freeSpaceBelow < leastFreeSpaceBelow){
+                                leastFreeSpaceBelow = freeSpaceBelow;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (leastFreeSpaceBelow <= 0) {
+                    continue;
+                }
+
+                for (int col = 0; col < chunkGroups[0].length; col++){
+                    for (int row = 0; row < chunkGroups.length; row++){
+                        int elementVal = chunkGroups[chunkGroups.length - 1 - row][col];
+                        if (elementVal == id){
+                            chunkGroups[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
+                            chunkGroups[chunkGroups.length - 1 - row][col] = -1;
+
+                            grid[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
+                            grid[chunkGroups.length - 1 - row][col] = -1;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int[] row : chunkGroups){
+            System.out.println(Arrays.toString(row));
+        }
+    }
+
+    public int[][] viral(int row, int col, int val, int[][] chunkGroups){
+        chunkGroups[row][col] = val;
+        int[][] offsets = new int[][]{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        for (int[] offset : offsets){
+            try{
+                int offsetedValue = chunkGroups[row + offset[0]][col + offset[1]];
+                int offsetedGridValue = this.grid[row + offset[0]][col + offset[1]];
+
+                if (offsetedValue != val && offsetedGridValue != -1){
+                    viral(row + offset[0], col + offset[1], val, chunkGroups);
+                }
+            } catch (ArrayIndexOutOfBoundsException e){
+                continue;
+            }
+        }
+        return chunkGroups;
+    }
 
     public boolean arrayContainsFull(int[] arr){
         for (int i : arr){
@@ -283,9 +366,43 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Board board = new Board(5,15);
-//        board.grid[0] = new int[]{-1, -1, 4, 4, -1};
-        int[] row = new int[]{4, 4, 4 ,4, 4};
-        System.out.println(board.arrayContainsFull(row));
+        Board board = new Board(5,18);
+        board.grid = new int[][]{
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, -1},
+                {-1, -1, -1,  0, -1},
+                { 0,  0,  0,  0, -1},
+                { 0,  0,  0,  0, -1},
+                {-1,  0,  0,  0, -1},
+                {-1, -1, -1,  0,  0},
+                { 0,  0,  0, -1, -1},
+                {-1,  0, -1, -1, -1},
+                { 0,  0, -1, -1, -1},
+        };
+
+        board.gravityChunks();
+
+//        int[][] chunkGroups = new int[board.HEIGHT][board.WIDTH];
+//        for (int[] row : chunkGroups){
+//            Arrays.fill(row, -1);
+//        }
+//
+////        board.groupChunks();
+//        int[][] resultChunks = board.viral(10, 3, 9, chunkGroups);
+//
+//        for (int[] row : resultChunks){
+//            System.out.println(Arrays.toString(row));
+//        }
+
+        UI ui = new UI(board.WIDTH, board.HEIGHT, 45);
+        ui.setState(Tetris.transpose(board.grid));
     }
 }
