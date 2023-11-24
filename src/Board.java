@@ -346,7 +346,7 @@ public class Board {
         return true;
     }
 
-    private List<Integer> getFullRows(){
+    public List<Integer> getFullRows(){
         List<Integer> fullRows = new ArrayList<>();
         for (int row = 0; row < this.grid.length; row++){
             int[] currentRow = this.grid[row];
