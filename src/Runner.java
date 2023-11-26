@@ -1,6 +1,6 @@
 public class Runner {
     public static void main(String[] args) throws InterruptedException, CloneNotSupportedException {
-        int NUM_OF_TEST = 10000;
+        int NUM_OF_TEST = 5;
 
         Board bestBoard = new Board(5, 18);
         UI bestUI = new UI(bestBoard.WIDTH, bestBoard.HEIGHT, 45);
@@ -15,7 +15,7 @@ public class Runner {
                 bestBoard = result.clone();
 
             //Print Results
-            if(i % 100 == 0) {
+            if(i % 1 == 0) {
                 System.out.println("---------------");
                 System.out.println(bestBoard.score);
                 bestUI.setState(transpose(bestBoard.grid));

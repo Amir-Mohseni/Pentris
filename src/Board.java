@@ -312,9 +312,11 @@ public class Board implements Cloneable {
             }
         }
 
-        for (int[] row : chunkGroups){
+/*        for (int[] row : chunkGroups){
             System.out.println(Arrays.toString(row));
         }
+
+ */
     }
 
     public int[][] viral(int row, int col, int val, int[][] chunkGroups){

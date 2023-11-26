@@ -8,18 +8,19 @@ public class Bot {
 
     Bot() {
         gameBoard = new Board(5, 18);
-        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);
+//        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);
     }
 
     public static Board getMaxScore(Board currentBoard, int id, int depthLimit) throws CloneNotSupportedException {
-        if(depthLimit == 0)
+        if(depthLimit == 0) {
+            currentBoard.score += currentBoard.emptyFullRows2();
             return currentBoard;
+        }
         Board bestBoard = currentBoard.clone();
         int bestScore = bestBoard.score;
         for (char move: moves) {
             Board newBoard = currentBoard.clone();
             newBoard.applyButtonPress(move, id);
-            newBoard.score += newBoard.emptyFullRows2();
             newBoard = getMaxScore(newBoard, id, depthLimit - 1);
             if (newBoard.score > bestScore) {
                 bestBoard = newBoard;
@@ -40,16 +41,15 @@ public class Bot {
             if(!gameBoard.validPlacement(new Cords(1, 2), gameBoard.pieces.get(id)))
                 break;
             gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
-            updateDisplay(gameBoard);
+//            updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
-                gameBoard = getMaxScore(gameBoard.clone(), id, 8);
-                gameBoard.score += gameBoard.emptyFullRows2();
-                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
-                MOVE_TIMER *= 0.99;
+                gameBoard = getMaxScore(gameBoard.clone(), id, 6);
+//                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
+//                MOVE_TIMER *= 0.99;
             }
             gameBoard.score += gameBoard.emptyFullRows2();
 
-            updateDisplay(gameBoard);
+//            updateDisplay(gameBoard);
             currentPiece++;
             if(currentPiece == 12) {
                 return gameBoard;
