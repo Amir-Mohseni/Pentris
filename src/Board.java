@@ -304,6 +304,7 @@ public class Board implements Cloneable {
                             chunkGroups[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
                             chunkGroups[chunkGroups.length - 1 - row][col] = -1;
 
+                            elementVal = grid[chunkGroups.length - 1 - row][col];
                             grid[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
                             grid[chunkGroups.length - 1 - row][col] = -1;
                         }
