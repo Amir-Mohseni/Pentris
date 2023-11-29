@@ -19,15 +19,17 @@ public class Tetris {
         boolean gameEnded = false;
         int currentPiece = 0;
 
+        int startX = 1, startY = 2;
+
         while(!gameEnded) {
             int id = gameBoard.permutation[currentPiece];
-            if(!gameBoard.validPlacement(new Cords(1, 2), gameBoard.pieces.get(id))) {
+            if(!gameBoard.validPlacement(new Cords(startX, startY), gameBoard.pieces.get(id))) {
                 JOptionPane.showMessageDialog(null, "You Lost");
                 System.exit(0);
                 gameEnded = true;
                 break;
             }
-            gameBoard.addPiece(new Cords(1, 2), gameBoard.pieces.get(id));
+            gameBoard.addPiece(new Cords(startX, startY), gameBoard.pieces.get(id));
             updateDisplay(gameBoard);
             while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
                 //Read inputs from keyboard

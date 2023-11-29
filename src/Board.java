@@ -79,6 +79,11 @@ public class Board implements Cloneable {
             return false;
     }
 
+    public boolean canGoDown(Piece piece) {
+        Cords gravity = new Cords(1, 0);
+        return validMove(gravity, piece);
+    }
+
     public boolean validRotationClockW(Piece piece) {
         TreeSet<Cords> newCords = new TreeSet<>();
 
@@ -217,6 +222,11 @@ public class Board implements Cloneable {
             emptyFullRows();
     }
 
+    public int updateScore() {
+        emptyFullRows2();
+        return score;
+    }
+
     public int emptyFullRows2() {
         int totalFullRows = 0;
         List<Integer> fullRows = this.getFullRows();
@@ -249,6 +259,9 @@ public class Board implements Cloneable {
         }
 
         gravityChunks();
+
+        //Update Score
+        score += totalFullRows;
 
         return totalFullRows;
     }
@@ -365,10 +378,56 @@ public class Board implements Cloneable {
         return -1;
     }
 
-    public int evaluateScore() {
-        int result = 0;
-        return result;
+    public double evaluateScore() {
+        double A, B, C, D;
+        A = -3.78;
+        B = -2.31;
+        C = 1.6;
+        D = -0.6;
+        return A * sumOfHeights() +
+                B * countHoles() +
+                C * updateScore() +
+                D * countBlockades()
+                ;
     }
+
+    public int countHoles() {
+        int count = 0;
+        for (int col = 0; col < grid[0].length; col++) {
+            for (int row = 0; row < grid.length - 1; row++) {
+                if(grid[row][col] != -1 && grid[row + 1][col] == -1) {
+                    int curRow = row + 1;
+                    while(curRow < grid.length && grid[curRow][col] == -1) {
+                        count++;
+                        curRow++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int countBlockades() {
+        int count = 0;
+        for (int col = 0; col < grid[0].length; col++) {
+            for (int row = 0; row < grid.length - 1; row++) {
+                if(grid[row][col] != -1 && grid[row + 1][col] == -1)
+                    count++;
+            }
+        }
+        return count;
+    }
+
+    public int sumOfHeights() {
+        int sum = 0;
+        for (int i = 0; i < grid.length; i++)
+            for (int j = 0; j < grid[i].length; j++)
+                if(grid[i][j] != -1)
+                    sum += grid.length - i;
+        return sum;
+    }
+
+
 
     public int getHighestEmptyRow() {
         for (int row = this.grid.length - 1; row >= 0; row--) {

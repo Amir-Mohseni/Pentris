@@ -1,3 +1,4 @@
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 public class Bot {
@@ -12,7 +13,8 @@ public class Bot {
 
     public static Board getMaxScore(Board currentBoard, int id, int depthLimit) throws CloneNotSupportedException {
         if(depthLimit == 0) {
-            currentBoard.score += currentBoard.emptyFullRows2() * 500;
+            if (!currentBoard.canGoDown(currentBoard.pieces.get(id)))
+                currentBoard.score += currentBoard.emptyFullRows2() * 500;
             currentBoard.score += currentBoard.getHighestEmptyRow() * 100;
             return currentBoard;
         }
@@ -54,6 +56,44 @@ public class Bot {
             if(currentPiece == 12) {
                 break;
             }
+        }
+        return gameBoard;
+    }
+
+    Board getBestResult(Board currentBoard, int id, int depth) throws CloneNotSupportedException {
+        if(depth == 0) {
+            while (currentBoard.canGoDown(currentBoard.pieces.get(id)))
+                currentBoard.applyGravity(currentBoard.pieces.get(id));
+            currentBoard.emptyFullRows2();
+            return currentBoard;
+        }
+        Board bestBoard = currentBoard;
+        double bestScore = -99999;
+        for (char move : moves) {
+            Board newBoard = currentBoard.clone();
+            newBoard.applyButtonPress(move, id);
+            newBoard = getBestResult(newBoard.clone(), id, depth - 1);
+            if(newBoard.evaluateScore() > bestScore) {
+                bestBoard = newBoard;
+                bestScore = newBoard.evaluateScore();
+            }
+        }
+
+        return bestBoard;
+    }
+
+    public Board run2() throws CloneNotSupportedException {
+        Board gameBoard = this.gameBoard;
+        int currentPiece = 0;
+        while(true) {
+            int id = gameBoard.permutation[currentPiece];
+            if(!gameBoard.validPlacement(new Cords(2, 2), gameBoard.pieces.get(id)))
+                break;
+            gameBoard.addPiece(new Cords(2, 2), gameBoard.pieces.get(id));
+            gameBoard = getBestResult(gameBoard.clone(), id, 7);
+            currentPiece++;
+            if (currentPiece == 12)
+                break;
         }
         return gameBoard;
     }
