@@ -90,7 +90,7 @@ public class Bot {
             if(!gameBoard.validPlacement(new Cords(2, 2), gameBoard.pieces.get(id)))
                 break;
             gameBoard.addPiece(new Cords(2, 2), gameBoard.pieces.get(id));
-            gameBoard = getBestResult(gameBoard.clone(), id, 7);
+            gameBoard = getBestResult(gameBoard.clone(), id, 6);
             currentPiece++;
             if (currentPiece == 12)
                 break;

@@ -5,6 +5,7 @@ public class Board implements Cloneable {
     int WIDTH;
     int HEIGHT;
     int NUMBER_OF_PIECES = 12;
+    Chromosome chromosome = new Chromosome(new double[]{-3.78, -2.31, 1.6, -0.6});
     int[] permutation = new int[NUMBER_OF_PIECES];
 
     int score = 0;
@@ -379,12 +380,8 @@ public class Board implements Cloneable {
     }
 
     public double evaluateScore() {
-        double A, B, C, D;
-        A = -3.78;
-        B = -2.31;
-        C = 1.6;
-        D = -0.6;
-        return A * sumOfHeights() +
+        double A = chromosome.weights[0], B = chromosome.weights[1], C = chromosome.weights[2], D = chromosome.weights[3];
+        return  A * sumOfHeights() +
                 B * countHoles() +
                 C * updateScore() +
                 D * countBlockades()
