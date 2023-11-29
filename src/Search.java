@@ -167,7 +167,7 @@ public class Search
 
 
 
-    private static void branchSearch() {
+    private static boolean branchSearch() {
         // Initialize an empty board
         int[][] field = new int[horizontalGridSize][verticalGridSize];
 
@@ -179,8 +179,9 @@ public class Search
 
         //Start the branch search
         boolean result = recursiveSearch(field, 0);
-        if(!result)
-            System.out.println("No solution Found");
+        return result;
+//        if(!result)
+ //           System.out.println("No solution Found");
     }
 
     private static int dfs(boolean[][] seen, int[][] field, int x, int y) {
@@ -229,7 +230,7 @@ public class Search
                     boolean validPlacement = true;
                     for (int x = 0; validPlacement && x < piece.length; x++) {
                         for (int y = 0; y < piece[0].length; y++) {
-                            if (piece[x][y] == 1 && field[i + x][j + y] != -1) {
+                            if (piece[x][y] != 0 && field[i + x][j + y] != -1) {
                                 validPlacement = false;
                                 break;
                             }
@@ -263,7 +264,7 @@ public class Search
         {
             for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
             {
-                if (piece[i][j] == 1)
+                if (piece[i][j] != 0)
                 {
                     // Add the ID of the pentomino to the board if the pentomino occupies this square
 					// i and j are offsets
@@ -279,7 +280,7 @@ public class Search
         {
             for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
             {
-                if (piece[i][j] == 1)
+                if (piece[i][j] != 0)
                 {
                     // remove the ID of the pentomino to the board if the pentomino occupies this square
                     // i and j are offsets
@@ -294,9 +295,11 @@ public class Search
 	 */
     public static void main(String[] args)
     {
-        //input = randomShuffle(input);
+        while(!branchSearch()) {
+            input = randomShuffle(input);
+        }
 //        search();
-        branchSearch();
+//        branchSearch();
     }
 
     public static char[] randomShuffle(char[] startArr) {
