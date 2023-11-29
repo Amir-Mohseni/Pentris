@@ -7,13 +7,13 @@ public class Bot {
     static final char[] moves = {'A', 'S', 'D', 'Q', 'R', 'N'};
 
     Bot() {
-        gameBoard = new Board(5, 18);
 //        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);
     }
 
     public static Board getMaxScore(Board currentBoard, int id, int depthLimit) throws CloneNotSupportedException {
         if(depthLimit == 0) {
-            currentBoard.score += currentBoard.emptyFullRows2();
+            currentBoard.score += currentBoard.emptyFullRows2() * 500;
+            currentBoard.score += currentBoard.getHighestEmptyRow() * 100;
             return currentBoard;
         }
         Board bestBoard = currentBoard.clone();
@@ -47,12 +47,12 @@ public class Bot {
 //                TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
 //                MOVE_TIMER *= 0.99;
             }
-            gameBoard.score += gameBoard.emptyFullRows2();
+            gameBoard.score += gameBoard.emptyFullRows2() * 500;
 
 //            updateDisplay(gameBoard);
             currentPiece++;
             if(currentPiece == 12) {
-                return gameBoard;
+                break;
             }
         }
         return gameBoard;

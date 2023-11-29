@@ -254,7 +254,7 @@ public class Board implements Cloneable {
     }
 
     public void gravityChunks(){
-        int groups = 0;
+        int groups = 13;
         List<Integer> groupIDs = new ArrayList<>();
 
         int[][] chunkGroups = new int[this.HEIGHT][this.WIDTH];
@@ -282,7 +282,7 @@ public class Board implements Cloneable {
                         int elementVal = chunkGroups[chunkGroups.length - 1 - row][col];
                         if (elementVal == -1){
                             freeSpaceBelow++;
-                        } else if(elementVal != -1 && elementVal != id){
+                        } else if(elementVal != id){
                             freeSpaceBelow = 0;
                         } else {
                             if (freeSpaceBelow < leastFreeSpaceBelow){
@@ -305,8 +305,8 @@ public class Board implements Cloneable {
                             chunkGroups[chunkGroups.length - 1 - row][col] = -1;
 
                             elementVal = grid[chunkGroups.length - 1 - row][col];
-                            grid[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
-                            grid[chunkGroups.length - 1 - row][col] = -1;
+                            chunkGroups[chunkGroups.length - 1 - row + leastFreeSpaceBelow][col] = elementVal;
+                            chunkGroups[chunkGroups.length - 1 - row][col] = -1;
                         }
                     }
                 }
@@ -363,6 +363,11 @@ public class Board implements Cloneable {
             if(id == permutation[i])
                 return i;
         return -1;
+    }
+
+    public int evaluateScore() {
+        int result = 0;
+        return result;
     }
 
     public int getHighestEmptyRow() {
