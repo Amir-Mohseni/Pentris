@@ -2,7 +2,8 @@ import java.util.Random;
 
 public class Chromosome {
     double[] weights;
-    static double mutationRate = 0.08;
+    double fitness;
+    static double mutationRate = 0.01;
 
     Chromosome(double[] weights) {
         this.weights = weights;
@@ -11,8 +12,9 @@ public class Chromosome {
     Chromosome() {
         Random rand = new Random();
         this.weights = new double[4];
-        for (int i = 0; i < 4; i++)
-            this.weights[i] = rand.nextDouble() * 10 - 5;
+        for (int i = 0; i < 4; i++) {
+            this.weights[i] = rand.nextDouble() * 10;
+        }
     }
 
     public Chromosome crossover(Chromosome otherChromosome) {
@@ -30,8 +32,14 @@ public class Chromosome {
     public double mutation(double val) {
         Random rand = new Random();
         if(rand.nextDouble() < mutationRate)
-            return rand.nextDouble() * 10 - 5;
+            return rand.nextDouble() * 10;
         else
             return val;
+    }
+
+    public void print() {
+        for (double val : this.weights)
+            System.out.print(val + " ");
+        System.out.println();
     }
 }

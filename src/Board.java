@@ -386,7 +386,7 @@ public class Board implements Cloneable {
         double A = chromosome.weights[0], B = chromosome.weights[1], C = chromosome.weights[2], D = chromosome.weights[3];
         return  A * sumOfHeights() +
                 B * countHoles() +
-                C * updateScore() +
+                -C * updateScore() +
                 D * countBlockades()
                 ;
     }

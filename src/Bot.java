@@ -5,8 +5,8 @@ public class Bot {
     Board gameBoard = new Board(5, 18);
     public static UI ui;
 
-//    static final char[] moves = {'A', 'S', 'D', 'Q', 'R', 'N'};
-    static final char[] moves = {'A', 'D', 'Q', 'R', 'N'};
+    static final char[] moves = {'A', 'S', 'D', 'Q', 'R', 'N'};
+//    static final char[] moves = {'A', 'D', 'Q', 'R', 'N'};
 
     Bot() {
 //        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);
@@ -91,7 +91,7 @@ public class Bot {
             if(!gameBoard.validPlacement(new Cords(2, 2), gameBoard.pieces.get(id)))
                 break;
             gameBoard.addPiece(new Cords(2, 2), gameBoard.pieces.get(id));
-            gameBoard = getBestResult(gameBoard.clone(), id, 6);
+            gameBoard = getBestResult(gameBoard.clone(), id, 5);
             currentPiece++;
             if (currentPiece == 12)
                 break;
