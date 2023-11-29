@@ -33,9 +33,9 @@ public class PentominoBuilder {
             },
             {
                     // pentomino representation Z
-                    {0,1,1},
+                    {1,1,0},
                     {0,2,0},
-                    {1,1,0}
+                    {0,1,1}
             },
             {
                     // pentomino representation T
@@ -63,10 +63,10 @@ public class PentominoBuilder {
             },
             {
                     // pentomino representation Y
-                    {1,0},
-                    {2,1},
-                    {1,0},
-                    {1,0}
+                    {0,1},
+                    {1,2},
+                    {0,1},
+                    {0,1}
             },
             {
                     // pentomino representation L

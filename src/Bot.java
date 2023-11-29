@@ -5,7 +5,8 @@ public class Bot {
     Board gameBoard = new Board(5, 18);
     public static UI ui;
 
-    static final char[] moves = {'A', 'S', 'D', 'Q', 'R', 'N'};
+//    static final char[] moves = {'A', 'S', 'D', 'Q', 'R', 'N'};
+    static final char[] moves = {'A', 'D', 'Q', 'R', 'N'};
 
     Bot() {
 //        ui = new UI(gameBoard.WIDTH, gameBoard.HEIGHT, 45);

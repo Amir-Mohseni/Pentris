@@ -29,11 +29,11 @@ public class Tetris {
                 gameEnded = true;
                 break;
             }
-            gameBoard.addPiece(new Cords(startX, startY), gameBoard.pieces.get(id));
+            gameBoard.addPiece(new Cords(startX, startY), gameBoard.pieces.get(currentPiece));
             updateDisplay(gameBoard);
-            while(gameBoard.applyGravity(gameBoard.pieces.get(id))) {
+            while(gameBoard.applyGravity(gameBoard.pieces.get(currentPiece))) {
                 //Read inputs from keyboard
-                getJFrame(gameBoard, id);
+                getJFrame(gameBoard, currentPiece);
 
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;

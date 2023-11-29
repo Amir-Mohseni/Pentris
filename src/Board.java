@@ -15,7 +15,9 @@ public class Board implements Cloneable {
         Random rand = new Random();
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
             permutation[i] = i;
-        randomShuffle(permutation);
+//        randomShuffle(permutation);
+        permutation = new int[]{5, 11, 7, 3, 10, 4, 0, 2, 1, 6, 9, 8};
+//        permutation = new int[]{8, 11, 7, 3, 10, 4, 0, 2, 1, 6, 9, 8};
 
         for (int i = 0; i < NUMBER_OF_PIECES; i++)
             pieces.add(new Piece(permutation[i], 0));
@@ -52,8 +54,9 @@ public class Board implements Cloneable {
                 }
 
         piece.occupiedSpaces = newCords;
-        for (Cords item : piece.occupiedSpaces)
+        for (Cords item : piece.occupiedSpaces) {
             grid[item.x][item.y] = piece.id;
+        }
     }
 
     public void movePiece(Cords cord, Piece piece) {
