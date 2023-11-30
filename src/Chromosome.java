@@ -3,7 +3,7 @@ import java.util.Random;
 public class Chromosome {
     double[] weights;
     double fitness;
-    static double mutationRate = 0.01;
+    static double mutationRate = 0.1;
 
     Chromosome(double[] weights) {
         this.weights = weights;

@@ -384,11 +384,19 @@ public class Board implements Cloneable {
 
     public double evaluateScore() {
         double A = chromosome.weights[0], B = chromosome.weights[1], C = chromosome.weights[2], D = chromosome.weights[3];
-        return  A * sumOfHeights() +
-                B * countHoles() +
-                -C * updateScore() +
-                D * countBlockades()
+        return  -A * sumOfHeights() +
+                -B * countHoles() +
+                C * getScore() +
+                -D * countBlockades()
                 ;
+    }
+
+    public double calculateFitness() {
+        return -sumOfHeights() + -2 * countHoles() + 3 * getScore() - countBlockades();
+    }
+
+    int getScore() {
+        return this.score;
     }
 
     public int countHoles() {

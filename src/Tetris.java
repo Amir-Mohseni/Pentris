@@ -22,8 +22,7 @@ public class Tetris {
         int startX = 1, startY = 2;
 
         while(!gameEnded) {
-            int id = gameBoard.permutation[currentPiece];
-            if(!gameBoard.validPlacement(new Cords(startX, startY), gameBoard.pieces.get(id))) {
+            if(!gameBoard.validPlacement(new Cords(startX, startY), gameBoard.pieces.get(currentPiece))) {
                 JOptionPane.showMessageDialog(null, "You Lost");
                 System.exit(0);
                 gameEnded = true;

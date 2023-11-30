@@ -1,6 +1,6 @@
 public class Runner {
     public static void main(String[] args) throws InterruptedException, CloneNotSupportedException {
-        int NUM_OF_TEST = 10000;
+        int NUM_OF_TEST = 1;
 
         Board bestBoard = new Board(5, 18);
         UI bestUI = new UI(bestBoard.WIDTH, bestBoard.HEIGHT, 45);

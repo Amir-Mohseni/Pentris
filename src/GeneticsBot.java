@@ -5,7 +5,7 @@ import java.util.Random;
 public class GeneticsBot {
     ArrayList <Chromosome> generation = new ArrayList<>();
     final int numberOfGenomes = 100;
-    final int numberOfGenerations = 5;
+    final int numberOfGenerations = 40;
 
     UI ui = new UI(5, 18, 45);
 
@@ -42,7 +42,7 @@ public class GeneticsBot {
             Bot newBot = new Bot();
             newBot.gameBoard.chromosome = chromosome;
             Board result = newBot.run2();
-            chromosome.fitness = result.evaluateScore();
+            chromosome.fitness = result.calculateFitness();
         }
     }
 
