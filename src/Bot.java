@@ -83,12 +83,12 @@ public class Bot {
         Board gameBoard = this.gameBoard;
         int currentPiece = 0;
         while(true) {
-            if(!gameBoard.validPlacement(new Cords(2, 2), gameBoard.pieces.get(currentPiece)))
+            if(!gameBoard.validPlacement(new Cords(2, 2), gameBoard.pieces.get(currentPiece % 12)))
                 break;
-            gameBoard.addPiece(new Cords(2, 2), gameBoard.pieces.get(currentPiece));
-            gameBoard = getBestResult(gameBoard.clone(), currentPiece, 5);
+            gameBoard.addPiece(new Cords(2, 2), gameBoard.pieces.get(currentPiece % 12));
+            gameBoard = getBestResult(gameBoard.clone(), currentPiece % 12, 5);
             currentPiece++;
-            if (currentPiece == 12)
+            if (currentPiece == 144)
                 break;
         }
         return gameBoard;

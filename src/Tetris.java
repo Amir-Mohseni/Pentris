@@ -22,28 +22,28 @@ public class Tetris {
         int startX = 1, startY = 2;
 
         while(!gameEnded) {
-            if(!gameBoard.validPlacement(new Cords(startX, startY), gameBoard.pieces.get(currentPiece))) {
+            if(!gameBoard.validPlacement(new Cords(startX, startY), gameBoard.pieces.get(currentPiece % 12))) {
                 JOptionPane.showMessageDialog(null, "You Lost");
                 System.exit(0);
                 gameEnded = true;
                 break;
             }
-            gameBoard.addPiece(new Cords(startX, startY), gameBoard.pieces.get(currentPiece));
+            gameBoard.addPiece(new Cords(startX, startY), gameBoard.pieces.get(currentPiece % 12));
             updateDisplay(gameBoard);
-            while(gameBoard.applyGravity(gameBoard.pieces.get(currentPiece))) {
+            while(gameBoard.applyGravity(gameBoard.pieces.get(currentPiece % 12))) {
                 //Read inputs from keyboard
-                getJFrame(gameBoard, currentPiece);
+                getJFrame(gameBoard, currentPiece % 12);
 
                 TimeUnit.MILLISECONDS.sleep(MOVE_TIMER);
                 MOVE_TIMER *= 0.99;
 
                 updateDisplay(gameBoard);
             }
-            gameBoard.emptyFullRows2();
 
+            gameBoard.updateScore();
             updateDisplay(gameBoard);
             currentPiece++;
-            if(currentPiece == 12) {
+            if(currentPiece == 144) {
 //                System.out.println("You Won!");
                 JOptionPane.showMessageDialog(null, "You Won");
                 System.exit(0);
