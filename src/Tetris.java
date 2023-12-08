@@ -43,6 +43,7 @@ public class Tetris {
             gameBoard.updateScore();
             updateDisplay(gameBoard);
             currentPiece++;
+            /*
             if(currentPiece == 144) {
 //                System.out.println("You Won!");
                 JOptionPane.showMessageDialog(null, "You Won");
@@ -50,6 +51,8 @@ public class Tetris {
 //                currentPiece = 0;
 //                gameBoard.randomShuffle(gameBoard.permutation);
             }
+
+             */
         }
     }
 
