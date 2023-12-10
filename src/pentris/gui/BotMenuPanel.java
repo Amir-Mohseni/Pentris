@@ -37,8 +37,8 @@ public class BotMenuPanel extends GuiPanel {
         bestBatchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GuiScreen.getInstance().setCurrentPanel("Genetics");
-                Username.getInstance().setBotName("Genetics");
+                GuiScreen.getInstance().setCurrentPanel("Best Batch");
+                Username.getInstance().setBotName("Best Batch");
             }
         });
         // Button for going back to the menu
